@@ -65,7 +65,7 @@ xterm*|rxvt*)
     ;;
 esac
 
-PS1='\d \# \D{%R} \w$ '
+PS1='\d \D{%R} $(echo -n $?) \w '
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
