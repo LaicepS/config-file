@@ -15,17 +15,17 @@ set background=light
 set smartindent   " smart code indentation
 set smarttab      " smart tabs
 set nocp " needed for ctags
-set backspace=2 
-set tabstop=8   
+set backspace=2 " define backspace behaviour
+set tabstop=8   " set softtabstop instead
 set showmode
 set showcmd
-set ruler " affiche ligne curseur
+set ruler " display cursor line
 set smartcase
 set textwidth=120
-set sw=4
+set shiftwidth=4
 set nu " line number
-set hlsearch " highlight the search
-set incsearch " search as typinh
+set hlsearch " highlight search
+set incsearch " search as typing
 set cursorline " highlight current line
 " always show the status line
 set laststatus=2
@@ -103,9 +103,8 @@ nnoremap L $
 
 " going into normal mode without esc
 inoremap jk <Esc>
-inoremap <Esc> <nop>
 "
-" Disable cursors HUEHUEHUEHUEHUEHUE
+" Disable cursors
 "
 noremap <down> <nop>
 map <left> <nop>
