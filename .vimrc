@@ -1,11 +1,61 @@
+" Vundle stuff
+" ----------------------------------------------------- {{{
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+"Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+"Plugin 'L9'
+" Git plugin not hosted on GitHub
+"Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+"Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Avoid a name conflict with L9
+"Plugin 'user/L9', {'name': 'newL9'}
+
+
+" YCM
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'mileszs/ack.vim'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+" }}}
+      
 " General Settings
 " ----------------------------------------------------- {{{
 filetype on       " enable file type detection
 syntax on         " syntax highlighting
 filetype plugin on
 filetype indent on
-
-colorscheme default
+colorscheme morning
 
 " }}}
 
@@ -22,7 +72,7 @@ set showcmd
 set ruler " display cursor line
 set smartcase
 set textwidth=120
-set shiftwidth=4
+set shiftwidth=2
 set nu " line number
 set hlsearch " highlight search
 set incsearch " search as typing
@@ -30,7 +80,9 @@ set cursorline " highlight current line
 " always show the status line
 set laststatus=2
 " statusline format
-set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
+set colorcolumn=100
+set guifont=Monospace\ 9
+set statusline=%f%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]%=%{getcwd()}
 " "              | | | | |  |   |      |  |     |    |
 " "              | | | | |  |   |      |  |     |    + current
 " "              | | | | |  |   |      |  |     |       column
@@ -47,14 +99,30 @@ set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 " "              +-- full path to file in the buffer
 "
 " configure tags - add additional tags here or comment out not-used ones
-set tags+=~/.vim/tags/stl
+"set tags+=~/.vim/tags/stl
 "set tags+=~/.vim/tags/gl
 "set tags+=~/.vim/tags/sdl
 "set tags+=~/.vim/tags/qt4
 set t_Co=256
+set mouse=a
+
+" Don't assume first-match when completing file names.
+set wildmode=longest,list
 
 set completeopt=menu,menuone,longest
 set pumheight=15
+set guioptions-=m
+set guioptions-=T
+
+" move backup to .vim/tmp
+set backupdir=~/.vim/tmp
+set directory=~/.vim/tmp
+
+set autoread
+
+" disable annoying bell sound in gvim
+set noerrorbells visualbell t_vb=
+autocmd GUIEnter * set visualbell t_vb=
 
 " }}}
 
@@ -71,31 +139,26 @@ runtime ftplugin/man.vim
 nnoremap <silent> K :exe "Man" expand('<cword>') <CR>
 
  " build tags of your own project with CTRL+F12
- map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
- noremap <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr>
- inoremap <F12> <Esc>:!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr>
-
- " toggle NerdTree
-nmap <F3> :NERDTreeToggle<CR>
-imap <F3> <Esc>:NERDTreeToggle<CR>a
+autocmd FileType d nnoremap <F12> :!ctags -R . /usr/lib/gcc/x86_64-linux-gnu/5/include/d <CR>
+autocmd FileType c,cpp nnoremap <F12> :!ctags -R . <CR>
+autocmd FileType cpp nnoremap <F12> :!ctags -R . -R --fields=+iaS --extra=+q <CR>
 
 " save current buffer
 nnoremap <C-s> :write <CR>
 inoremap <C-s> <Esc>:write<Cr>
 
-
-" toggle Taglist
-nnoremap <silent> <F4> :TlistToggle<CR>
-" add recursively every c++ file in the curren taglist
-nnoremap <silent> <C-F4> :TlistAddFilesRecursive . *.h <CR> :TlistAddFilesRecursive . *.cpp <CR>
-"
-" TAB and Shift-TAB in normal mode cycle tabs
-"
-noremap <Tab> :tabnext<CR>
-noremap <S-Tab> :tabprevious<CR>
-
+" quick vimrc editing
 nnoremap <Leader>ev :vsplit $MYVIMRC<Cr>
 nnoremap <Leader>sv :source $MYVIMRC<Cr>
+
+" paste in insert mode
+inoremap <Leader>p <Esc>pa
+
+inoremap <Leader>A <Esc>A
+inoremap <Leader>I <Esc>I
+
+" get current function nearest (upwise) caller
+nnoremap <Leader>c [[kt(#
 
 " remapping H and L to go to the begin/end of the line. previous map are useless
 nnoremap H ^
@@ -103,24 +166,45 @@ nnoremap L $
 
 " going into normal mode without esc
 inoremap jk <Esc>
-"
-" Disable cursors
-"
-noremap <down> <nop>
-map <left> <nop>
-map <right> <nop>
-map <up> <nop>
 
-imap <down> <nop>
-imap <left> <nop>
-imap <right> <nop>
-imap <up> <nop>
+nnoremap <Space> zz 
 
+nnoremap <C-tab> :tabnext<CR>
+nnoremap <C-S-tab> :tabprevious<CR>
 
-" 
-" Map Shit+Space to escape insert mode
-" 
-imap <S-Space> <Esc>
+nnoremap <F4> :Ack! <C-r><C-w><CR>
+vnoremap <F4> y :Ack! <C-r>"<CR>
+
+" in vimdiff, go to next diff and obtain it
+nnoremap <Leader>d ]cdo
+
+" start of line
+cnoremap <C-A>		<Home>
+" back one character
+cnoremap <C-B>		<Left>
+" delete character under cursor
+cnoremap <C-D>		<Del>
+" end of line
+cnoremap <C-E>		<End>
+" forward one character
+cnoremap <C-F>		<Right>
+" recall newer command-line
+cnoremap <C-N>		<Down>
+" recall previous (older) command-line
+cnoremap <C-P>		<Up>
+" back one word
+cnoremap <M-b>	 	<S-Left>
+" forward one word
+cnoremap <M-f>		<S-Right>
+
+" search for visually selected text
+vnoremap // y/<C-R>"<CR>
+
+"[count]G       Also open fold under cursor when supplying [count] (i.e.
+"               jumping to a particular line, not the end of the
+"               buffer). Use [count]|gg| if you don't want this.
+nnoremap <expr> G (v:count ? 'Gzv' : 'G')
+
 " }}}
 
 "  AUTOCOMMANDs (au)
@@ -136,35 +220,48 @@ augroup END
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
+    autocmd BufNewFile,BufRead *.rex setf d
+    autocmd BufNewFile,BufRead *.mpp setf cpp
+    autocmd BufNewFile,BufRead *.di setf d
 augroup END
 " }}}
+"
 
-" }}}
+"------------------------------------------------------                         
+" Folding                                                                       
+"------------------------------------------------------                         
+set foldmethod=indent                                                           
+autocmd BufNewFile,BufRead *.c,*.cpp,*.d set foldenable foldmethod=syntax 
 
-"  PLUGINs stuff
-" ----------------------------------------------------- {{{
-
-execute pathogen#infect()
-execute pathogen#helptags()
-
-let g:SuperTabDefaultCompletionType = "context"
-
-let g:NERDTreeDirArrows=0
-let g:NERDTreeIgnore=['\.o$']
+" YCM
+let g:ycm_filetype_specific_completion_to_disable = {
+      \ '*': 1
+      \}
 
 
-let g:syntastic_cpp_checkers=['gcc']
-let g:syntastic_cpp_check_header=1
-let g:syntastic_cpp_include_dirs=[ '.']
-let g:syntastic_cpp_auto_refresh_includes=1
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+set runtimepath^=~/.vim/plugin/
 
-let g:clang_snippets=1
-let g:clang_snippets_engine='snipmate'
-let g:clang_user_options='|| exit 0'
-let g:clang_complete_copen=1
-let g:clang_complete_auto=0
+" Ctrlp
 
-let g:Tlist_Use_Right_Window=1
-let g:Tlist_Display_Prototype=1
-let g:Tlist_WinWidth = 60
-" }}}
+let g:ctrlp_root_markers = ['.ctrlp']
+let g:ctrlp_max_files=20000
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)$',
+    \ 'file': '\v\.(pdf|exe|so|dll|o|deps|fdeps)$|\.ctrlp|tags|\.\~.\~',
+    \ }
+
+autocmd! FileType qf nnoremap <buffer> <C-V> <C-w><Enter><C-w>H
+
+nnoremap <F1> :windo :call DiffToggle()<CR>
+
+function! DiffToggle()
+    if &diff
+        diffoff
+	colorscheme morning
+    else
+        diffthis
+	colorscheme evening
+    endif
+:endfunction
+
