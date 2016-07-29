@@ -1,0 +1,128 @@
+# history mechanism
+alias h='history 1'
+
+#  VIM related aliases ;o) btw. ``$SHELL:t'' is a modifiers from the Z
+#  Shell. In other shells you can use ``${SHELL##*/}'' instead. Valid
+#  Modifiers can be found in ``info -f zsh -n Modifiers''.
+alias vlc='vlc --color'
+alias s='vim -S session.vim'
+alias vi="${EDITOR}"
+alias view="${EDITOR} -R"
+alias ex="${EDITOR} -e"
+
+# highlight the current day in ``cal''
+alias cal='var=$(/usr/bin/cal); echo "${var/$(date +%-d)/$(echo -e "\033[1;31m$(date +%-d)\033[0m")}"'
+
+# r00t commands
+if (( EUID != 0 )) && [ -x =sudo ]; then
+	alias ifconfig="sudo ifconfig"
+	alias shutdown="sudo shutdown"
+	alias tcpdump="sudo tcpdump"
+	alias nmap="sudo nmap"
+
+fi
+
+# grep wrapper with search highlighting (<http://www.acme.com/software/hgrep/>)
+# Only for non-linux systems needed (see below)
+if [ ! "${OSTYPE}" = linux-gnu ] && [ -x  $(which hgrep) ]; then
+	alias grep='hgrep'
+else
+	# Note: ``--color'' is a feature from GNU grep >=2.5 and i do *not*
+	#       check for the available version, but only for ``GNU''!
+	#if [ ${OS} = "linux-gnu" -n ${(MS)$(grep --version 2>/dev/null)#GNU} ]; then
+	if [ ${OS} = "linux-gnu" ]; then
+		export GREP_COLOR='0;31'
+		(grep --help 2>/dev/null |grep -- --color=) >/dev/null && export GREP_OPTIONS='--color=auto'
+		alias hgrep='grep $GREP_OPTIONS $*'
+	fi
+fi
+
+# VimTip 121: Using vim as a syntax-highlighting pager
+# <http://vim.sourceforge.net/tip_view.php?tip_id=>
+if [ -e ~/.vimrc.more ] && [ -x $(which vim) ]; then
+	alias vmore='vim -u ~/.vimrc.more'
+fi
+
+# I use ``gls'' instead of ls because the standard 'ls' from OpenBSD
+# doesn't not support colors :/ GNU ls is part of fileutils-4.1 and
+# component of the portcollection ($PORTSDIR/misc/fileutils)
+# [[ ${OS} = "linux" && -n ${(MS)$(ls --version 2>/dev/null)#GNU} ]] && ls_flags="--color"
+# (ls --help 2>/dev/null |grep -- --color=) >/dev/null && alias ls='ls -b -CF --color=auto'
+if [ ${OS} = "linux-gnu" ]; then
+	if ((ls --help 2>/dev/null |grep -- --time-style=) >/dev/null); then
+		export TIMESTYLE=$'--time-style="+\e[0;35m%Y-%m-%d %H:%M\e[0m"'
+		alias ls="ls -B -b -CF -h --color=always ${TIMESTYLE}"
+	else
+		alias ls="ls -B -b -CF -h --color=always"
+	fi
+else
+	alias ls='ls -F'
+fi
+
+# stolen from a ~/.bashrc (IIRC RedHat(?))
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+
+# *Very* often used!
+alias less='less -r'
+alias ll='ls -l'
+alias la='ls -la'
+alias lsd='ls -ld *(/)'                 # only show directories
+alias lad='ls -ld .*(/)'                # only show dot-directories
+alias lsa='ls -a .*(.)'                 # only show dot-files
+alias lsbig='ls -lSh *(.) | head'       # display the biggest files
+alias lssmall='ls -Sl *(.) | tail'      # display the smallest files
+alias lsnew='ls -rtl *(.) | tail'       # display the newest files
+alias lsold='ls -rtl *(.) | head'       # display the oldest files
+
+# convert from UPPER to lower (or back)
+alias UP2low='for i in *(.); mv $i ${i:l}'
+alias low2UP='for i in *(.); mv $i ${i:u}'
+
+# Make the source to be with you!!!11!
+alias C='./configure'
+alias CH='./configure --help | $PAGER'
+
+# some global aliases for redirection
+alias -g N="&>/dev/null"
+alias -g 1N="1>/dev/null"
+alias -g 2N="2>/dev/null"
+alias -g DN="/dev/null"
+alias -g PI="|"
+
+# suffix aliases (needs Zsh >= 4.2.0).  Suffix aliases allow the shell
+# to run a command on a file by suffix, e.g 'alias -s ps=gv' makes
+# 'foo.ps' execute 'gv foo.ps'.
+if [[ $ZSH_VERSION == 4.2.<0->* ]]; then
+	alias -s dvi=kdvi
+	alias -s pdf=kpdf
+	alias -s ps=gv
+	alias -s ogg=alsaplayer
+	alias -s wmv=mplayer
+	alias -s avi=vlc
+	alias -s mp3=alsaplayer
+	alias -s html=${BROWSER:-lynx}
+	alias -s htm=${BROWSER:-lynx}
+	alias -s tex=${EDITOR:-vi}
+	alias -s txt=${PAGER:-less}
+	alias -s gz='tar -xzvf'
+	alias -s tar='tar -xvf'
+	alias -s bz2='tar -xjvf'
+	alias -s tgz='tar -xzvf'
+	alias -s zip=unzip
+fi
+
+alias playlist='mpc playlist --format "%position% : %file%"'
+alias vim='gvim'
+alias grep='grep --color -I --exclude=tags --exclude="*~" --exclude-dir=".svn" --exclude-dir=".bzr"'
+alias grepi='grep -i'
+alias m='nice make -j 24'
+alias play='alsaplayer --start'
+alias tvim='gvim -f --remote-tab-silent'
+alias dis='objdump -dz -M intel'
+alias xterm='xterm -bg black -fg white'
+
+alias valgrind='valgrind -q'
