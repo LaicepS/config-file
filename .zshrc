@@ -1,3 +1,6 @@
+# Common zsh configuration. 
+# Don't put anything environment specific here.
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -64,18 +67,6 @@ alias la='ls -A'
 alias l='ls -CF'
 alias sl=ls
 
-#	man path
-MANPATH=/usr/share/man:/usr/local/man
-
-#	bin path
-PATH=/opt/toolchain/x86_64-allegro-mingw32/bin/:~/bin/vooya:~/bin:~/dev/rex/bin:/usr/lib/ccache:/usr/local/bin:/usr/bin:/bin:/usr/sbin:
-#
-#	library path
-LD_LIBRARY_PATH=/usr/local/lib:/lib:/usr/lib
-
-export MANPATH
-export PATH
-export EDITOR
 
 ## Vim stuff
 stty -ixon
@@ -94,13 +85,9 @@ alias m='make -j8'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 
-export DEVDIR="/home/dorian/dev"
 alias g="gvim --servername GVIM"
 alias vim="gvim --servername GVIM"
 alias gtab="gvim --servername GVIM --remote-tab"
-alias last10="bzr log -r -10.. --line --forward"
-alias vpg="bin/gsg.exe av1/av1.rex -c"
-alias vpp="bin/gsp.exe av1/av1.rex -b"
 
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
@@ -108,11 +95,4 @@ export LESSOPEN='|~/.lessfilter %s'
 REPORTTIME=30
 TIMEFMT=$'%J %E\t'
 
-background=dark
-
-alias mmt='evince ~/doc/w13293\ ISO-IEC_23008-1_\(E\)_2ndCD.pdf'
 alias ccat="pygmentize -g"
-alias 'eav=scripts/explore_av1'
-
-# to compile AOM 
-export ASFLAGS=-DPIC
