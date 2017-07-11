@@ -12,6 +12,8 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+"Plugin 'yggdroot/indentline'
+
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
@@ -30,8 +32,9 @@ Plugin 'gmarik/Vundle.vim'
 
 
 " YCM
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'mileszs/ack.vim'
+
+Plugin 'ctrlp.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -55,7 +58,12 @@ filetype on       " enable file type detection
 syntax on         " syntax highlighting
 filetype plugin on
 filetype indent on
-colorscheme morning
+
+if has("gui_running")
+  colorscheme solarized
+else
+  colorscheme delek
+endif
 
 " }}}
 
@@ -80,8 +88,6 @@ set cursorline " highlight current line
 " always show the status line
 set laststatus=2
 " statusline format
-set colorcolumn=100
-set guifont=Monospace\ 9
 set statusline=%f%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]%=%{getcwd()}
 " "              | | | | |  |   |      |  |     |    |
 " "              | | | | |  |   |      |  |     |    + current
@@ -120,9 +126,15 @@ set directory=~/.vim/tmp
 
 set autoread
 
+" open vertical splits on the right
+set splitright
+
 " disable annoying bell sound in gvim
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
+
+" cursor color
+highlight Cursor guifg=white guibg=LightRed
 
 " }}}
 
@@ -139,7 +151,7 @@ runtime ftplugin/man.vim
 nnoremap <silent> K :exe "Man" expand('<cword>') <CR>
 
  " build tags of your own project with CTRL+F12
-autocmd FileType d nnoremap <F12> :!ctags -R . /usr/lib/gcc/x86_64-linux-gnu/5/include/d <CR>
+autocmd FileType d nnoremap <F12> :!ctags -R . /usr/lib/gcc/x86_64-linux-gnu/6/include/d <CR>
 autocmd FileType c,cpp nnoremap <F12> :!ctags -R . <CR>
 autocmd FileType cpp nnoremap <F12> :!ctags -R . -R --fields=+iaS --extra=+q <CR>
 
@@ -172,8 +184,12 @@ nnoremap <Space> zz
 nnoremap <C-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR>
 
-nnoremap <F4> :Ack! <C-r><C-w><CR>
-vnoremap <F4> y :Ack! <C-r>"<CR>
+nnoremap <F4> :Ack! -w <C-r><C-w><CR>
+vnoremap <F4> y :Ack! -w <C-r>"<CR>
+
+" this tells ack not to jump to the first occurence of a search by default
+cnoreabbrev Ack Ack!
+nnoremap <Leader>a :Ack!<Space>
 
 " in vimdiff, go to next diff and obtain it
 nnoremap <Leader>d ]cdo
@@ -196,6 +212,8 @@ cnoremap <C-P>		<Up>
 cnoremap <M-b>	 	<S-Left>
 " forward one word
 cnoremap <M-f>		<S-Right>
+"remove everything from the cursor to the end of line
+cnoremap <C-k> <C-\>esplit(getcmdline(), " ")[0]<CR><Space>
 
 " search for visually selected text
 vnoremap // y/<C-R>"<CR>
@@ -204,6 +222,8 @@ vnoremap // y/<C-R>"<CR>
 "               jumping to a particular line, not the end of the
 "               buffer). Use [count]|gg| if you don't want this.
 nnoremap <expr> G (v:count ? 'Gzv' : 'G')
+
+nnoremap <F3> :make -j8<Cr>
 
 " }}}
 
@@ -227,41 +247,18 @@ augroup END
 " }}}
 "
 
-"------------------------------------------------------                         
-" Folding                                                                       
-"------------------------------------------------------                         
-set foldmethod=indent                                                           
-autocmd BufNewFile,BufRead *.c,*.cpp,*.d set foldenable foldmethod=syntax 
-
-" YCM
-let g:ycm_filetype_specific_completion_to_disable = {
-      \ '*': 1
-      \}
-
-
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 set runtimepath^=~/.vim/plugin/
 
 " Ctrlp
 
-let g:ctrlp_root_markers = ['.ctrlp']
+let g:ctrlp_root_markers = ['.ctrlp|.git|.bzr|.svn']
 let g:ctrlp_max_files=20000
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)$',
+    \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)|cov$',
     \ 'file': '\v\.(pdf|exe|so|dll|o|deps|fdeps)$|\.ctrlp|tags|\.\~.\~',
     \ }
 
 autocmd! FileType qf nnoremap <buffer> <C-V> <C-w><Enter><C-w>H
 
-nnoremap <F1> :windo :call DiffToggle()<CR>
-
-function! DiffToggle()
-    if &diff
-        diffoff
-	colorscheme morning
-    else
-        diffthis
-	colorscheme evening
-    endif
-:endfunction
 
