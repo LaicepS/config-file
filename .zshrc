@@ -22,6 +22,9 @@ export KEYTIMEOUT=1
 
 bindkey '^r' history-incremental-search-backward
 
+bindkey '^P' up-line-or-search
+bindkey '^N' down-line-or-search
+
 # add an indicator when vi is in normal mode
 function zle-line-init zle-keymap-select {
     VIM_PROMPT="%{$fg_bold[magenta]%} [% NORMAL]%  %{$reset_color%}"
