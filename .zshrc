@@ -24,6 +24,7 @@ bindkey '^r' history-incremental-search-backward
 
 bindkey '^P' up-line-or-search
 bindkey '^N' down-line-or-search
+bindkey '^?' backward-delete-char
 
 # add an indicator when vi is in normal mode
 function zle-line-init zle-keymap-select {
