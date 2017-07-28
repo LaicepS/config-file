@@ -66,7 +66,7 @@ PS1="%M@%B %{$fg[magenta]%}%d%{$reset_color%} %? %% %b"
 
 # some more ls aliases
 alias ls='ls --color'
-alias ll='ls -l'
+alias ll='ls -l --color'
 alias la='ls -A'
 alias l='ls -CF'
 alias sl=ls
