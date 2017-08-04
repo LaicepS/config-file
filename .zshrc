@@ -49,7 +49,10 @@ zle -N zle-line-init
 zle -N zle-keymap-select
 
 # The following lines configure zsh in emacs edit mode 
-bindkey \^U backward-kill-line
+bindkey '^U' backward-kill-line
+bindkey '^K' kill-line
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
 
 autoload -U select-word-style
 select-word-style bash
