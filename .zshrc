@@ -8,10 +8,21 @@
 HISTFILE=~/.histfile
 HISTSIZE=50000
 SAVEHIST=50000
-setopt appendhistory autocd notify
+setopt autocd
+
+# Report the status of background jobs immediately, rather than
+# waiting until just before printing a prompt.
+setopt notify
+
+setopt appendhistory autocd
 setopt inc_append_history share_history
+
 # ignore duplicates in history
 setopt hist_ignore_all_dups
+
+# Try to make the completion list smaller (occupying less lines) by
+# printing the matches in columns with different widths.
+setopt list_packed
 
 unsetopt beep
 
@@ -21,6 +32,7 @@ bindkey -v
 export KEYTIMEOUT=1
 
 bindkey '^r' history-incremental-search-backward
+bindkey '^s' history-incremental-search-forward
 
 bindkey '^P' up-line-or-search
 bindkey '^N' down-line-or-search
