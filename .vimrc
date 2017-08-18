@@ -214,6 +214,8 @@ cnoremap <C-P>		<Up>
 cnoremap <M-b>	 	<S-Left>
 " forward one word
 cnoremap <M-f>		<S-Right>
+" delete one forward word
+cnoremap <M-d>		<S-Right><C-w>
 "remove everything from the cursor to the end of line
 cnoremap <C-k> <C-\>esplit(getcmdline(), " ")[0]<CR><Space>
 
