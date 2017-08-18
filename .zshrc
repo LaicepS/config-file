@@ -4,6 +4,8 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+fortune
+
 #Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=50000
