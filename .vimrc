@@ -254,6 +254,7 @@ set runtimepath^=~/.vim/plugin/
 
 " Ctrlp
 
+let g:ctrlp_cmd = 'CtrlPMRU'
 let g:ctrlp_root_markers = ['.ctrlp|.git|.bzr|.svn']
 let g:ctrlp_max_files=20000
 let g:ctrlp_custom_ignore = {
