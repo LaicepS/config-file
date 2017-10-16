@@ -226,8 +226,6 @@ vnoremap // y/<C-R>"<CR>
 "               buffer). Use [count]|gg| if you don't want this.
 nnoremap <expr> G (v:count ? 'Gzv' : 'G')
 
-nnoremap <F3> :make -j8<Cr>
-
 " }}}
 
 "  AUTOCOMMANDs (au)
