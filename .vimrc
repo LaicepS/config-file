@@ -81,7 +81,7 @@ set ruler " display cursor line
 set smartcase
 set textwidth=120
 set shiftwidth=2
-set nu " line number
+set nonu " line number
 set hlsearch " highlight search
 set incsearch " search as typing
 set cursorline " highlight current line
