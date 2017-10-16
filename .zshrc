@@ -112,6 +112,7 @@ alias gtab="gvim --servername GVIM --remote-tab"
 
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
+export dn=/dev/null
 
 REPORTTIME=30
 TIMEFMT=$'%J %E\t'
