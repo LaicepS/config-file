@@ -90,16 +90,15 @@ set laststatus=2
 " statusline format
 set guifont=Monospace\ 9
 set colorcolumn=100
-set statusline=%f%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]%=%{getcwd()}
-" "              | | | | |  |   |      |  |     |    |
-" "              | | | | |  |   |      |  |     |    + current
-" "              | | | | |  |   |      |  |     |       column
-" "              | | | | |  |   |      |  |     +-- current line
-" "              | | | | |  |   |      |  +-- current % into file
-" "              | | | | |  |   |      +-- current syntax in
-" "              | | | | |  |   |          square brackets
-" "              | | | | |  |   +-- current fileformat
-" "              | | | | |  +-- number of lines
+set statusline=%f%m%r%h%w[%{&ff}]%y[%p%%][%04l,%04v]%=%{getcwd()}
+" "              | | | | |     |      |  |     |    |
+" "              | | | | |     |      |  |     |    + current
+" "              | | | | |     |      |  |     |       column
+" "              | | | | |     |      |  |     +-- current line
+" "              | | | | |     |      |  +-- current % into file
+" "              | | | | |     |      +-- current syntax in
+" "              | | | | |     |          square brackets
+" "              | | | | |     +-- current fileformat
 " "              | | | | +-- preview flag in square brackets
 " "              | | | +-- help flag in square brackets
 " "              | | +-- readonly flag in square brackets
