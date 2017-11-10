@@ -149,7 +149,7 @@ runtime ftplugin/man.vim
 nnoremap <silent> K :exe "Man" expand('<cword>') <CR>
 
  " build tags of your own project with CTRL+F12
-autocmd FileType d nnoremap <F12> :!ctags -R . /usr/lib/gcc/x86_64-linux-gnu/6/include/d <CR>
+autocmd FileType d nnoremap <F12> :!ctags -R . /usr/lib/gcc/x86_64-linux-gnu/7/include/d <CR>
 autocmd FileType c,cpp nnoremap <F12> :!ctags -R . <CR>
 autocmd FileType cpp nnoremap <F12> :!ctags -R . -R --fields=+iaS --extra=+q <CR>
 
