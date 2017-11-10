@@ -81,11 +81,12 @@ set nonu " line number
 set hlsearch " highlight search
 set incsearch " search as typing
 set cursorline " highlight current line
+hi CursorLine guibg=darkred guifg=white
 " always show the status line
 set laststatus=2
 " statusline format
 set guifont=Monospace\ 9
-set colorcolumn=100
+set colorcolumn=80
 set statusline=%f%m%r%h%w[%{&ff}]%y[%p%%][%04l,%04v]%=%{getcwd()}
 " "              | | | | |     |      |  |     |    |
 " "              | | | | |     |      |  |     |    + current
