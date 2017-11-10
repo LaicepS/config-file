@@ -59,17 +59,13 @@ syntax on         " syntax highlighting
 filetype plugin on
 filetype indent on
 
-if has("gui_running")
-  colorscheme solarized
-else
-  colorscheme delek
-endif
+colorscheme pablo
 
 " }}}
 
 "  SETs
 " ----------------------------------------------------- {{{
-set background=light
+set background=dark
 set smartindent   " smart code indentation
 set smarttab      " smart tabs
 set nocp " needed for ctags
