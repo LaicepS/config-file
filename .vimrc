@@ -134,6 +134,12 @@ autocmd GUIEnter * set visualbell t_vb=
 " cursor color
 highlight Cursor guifg=white guibg=LightRed
 
+" make the warning when search wraps much more obvious
+highlight WarningMsg ctermfg=white ctermbg=red guifg=White guibg=Red gui=None
+
+" set the completion menu to  readable colrors on a dark background
+highlight Pmenu guibg=brown gui=bold
+
 " }}}
 
 let mapleader=","
