@@ -59,13 +59,13 @@ syntax on         " syntax highlighting
 filetype plugin on
 filetype indent on
 
-colorscheme pablo
+colorscheme solarized
 
 " }}}
 
 "  SETs
 " ----------------------------------------------------- {{{
-set background=dark
+set background=light
 set smartindent   " smart code indentation
 set smarttab      " smart tabs
 set nocp " needed for ctags
@@ -73,7 +73,7 @@ set backspace=2 " define backspace behaviour
 set tabstop=8   " set softtabstop instead
 set showmode
 set showcmd
-set ruler " display cursor line
+set ruler
 set smartcase
 set textwidth=120
 set shiftwidth=2
@@ -81,26 +81,13 @@ set nonu " line number
 set hlsearch " highlight search
 set incsearch " search as typing
 set cursorline " highlight current line
-hi CursorLine guibg=darkred guifg=white
+" hi CursorLine guibg=darkred guifg=white " make the cursor line more visisble on dark background
 " always show the status line
 set laststatus=2
 " statusline format
 set guifont=Monospace\ 9
 set colorcolumn=80
 set statusline=%f%m%r%h%w[%{&ff}]%y[%p%%][%04l,%04v]%=%{getcwd()}
-" "              | | | | |     |      |  |     |    |
-" "              | | | | |     |      |  |     |    + current
-" "              | | | | |     |      |  |     |       column
-" "              | | | | |     |      |  |     +-- current line
-" "              | | | | |     |      |  +-- current % into file
-" "              | | | | |     |      +-- current syntax in
-" "              | | | | |     |          square brackets
-" "              | | | | |     +-- current fileformat
-" "              | | | | +-- preview flag in square brackets
-" "              | | | +-- help flag in square brackets
-" "              | | +-- readonly flag in square brackets
-" "              | +-- rodified flag in square brackets
-" "              +-- full path to file in the buffer
 "
 " configure tags - add additional tags here or comment out not-used ones
 "set tags+=~/.vim/tags/stl
@@ -138,7 +125,7 @@ highlight Cursor guifg=white guibg=LightRed
 highlight WarningMsg ctermfg=white ctermbg=red guifg=White guibg=Red gui=None
 
 " set the completion menu to  readable colrors on a dark background
-highlight Pmenu guibg=brown gui=bold
+" highlight Pmenu guibg=brown gui=bold
 
 " }}}
 
