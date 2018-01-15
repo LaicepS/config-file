@@ -87,7 +87,7 @@ set laststatus=2
 " statusline format
 set guifont=Monospace\ 9
 set colorcolumn=80
-set statusline=%f%m%r%h%w[%{&ff}]%y[%p%%][%04l,%04v]%=%{getcwd()}
+set statusline=%f%m%r%h%w%y[%l,%v]%=%{getcwd()}
 "
 " configure tags - add additional tags here or comment out not-used ones
 "set tags+=~/.vim/tags/stl
