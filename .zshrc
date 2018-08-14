@@ -105,8 +105,10 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 
 alias g="gvim --servername GVIM"
-alias vim="gvim --servername GVIM"
+alias vim="vim --servername GVIM"
 alias gtab="gvim --servername GVIM --remote-tab"
+
+alias fork='gnome-terminal --working-directory="$PWD"'
 
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
@@ -116,3 +118,4 @@ REPORTTIME=30
 TIMEFMT=$'%J %E\t'
 
 alias ccat="pygmentize -g"
+alias gg="google-chrome"
