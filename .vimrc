@@ -81,6 +81,7 @@ set nonu " line number
 set hlsearch " highlight search
 set incsearch " search as typing
 set cursorline " highlight current line
+set cursorcolumn " highlight current col
 " hi CursorLine guibg=darkred guifg=white " make the cursor line more visisble on dark background
 " always show the status line
 set laststatus=2
