@@ -35,6 +35,8 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'mileszs/ack.vim'
 
 Plugin 'ctrlp.vim'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'mhinz/vim-signify'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
