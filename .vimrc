@@ -34,7 +34,8 @@ Plugin 'gmarik/Vundle.vim'
 " YCM
 Plugin 'mileszs/ack.vim'
 
-Plugin 'ctrlp.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'kien/ctrlp.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'mhinz/vim-signify'
 
@@ -53,7 +54,7 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 " }}}
-      
+
 " General Settings
 " ----------------------------------------------------- {{{
 filetype on       " enable file type detection
@@ -61,7 +62,9 @@ syntax on         " syntax highlighting
 filetype plugin on
 filetype indent on
 
-colorscheme solarized
+if has("gui_running")
+  colorscheme morning
+endif
 
 " }}}
 
@@ -78,7 +81,7 @@ set showcmd
 set ruler
 set smartcase
 set textwidth=120
-set shiftwidth=2
+set shiftwidth=4
 set nonu " line number
 set hlsearch " highlight search
 set incsearch " search as typing
@@ -88,8 +91,7 @@ set cursorcolumn " highlight current col
 " always show the status line
 set laststatus=2
 " statusline format
-set guifont=Monospace\ 9
-set colorcolumn=80
+set guifont=Monospace\ 10
 set statusline=%f%m%r%h%w%y[%l,%v]%=%{getcwd()}
 "
 " configure tags - add additional tags here or comment out not-used ones
@@ -117,6 +119,8 @@ set autoread
 " open vertical splits on the right
 set splitright
 
+set nowrap
+
 " disable annoying bell sound in gvim
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
@@ -126,6 +130,15 @@ highlight Cursor guifg=white guibg=LightRed
 
 " make the warning when search wraps much more obvious
 highlight WarningMsg ctermfg=white ctermbg=red guifg=White guibg=Red gui=None
+
+" more readable selection
+highlight Visual ctermbg=grey
+
+" trailing white spaces
+if (&filetype != 'text')
+    highlight ExtraWhitespace ctermbg=red guibg=red
+    match ExtraWhitespace /\s\+$/
+endif
 
 " set the completion menu to  readable colrors on a dark background
 " highlight Pmenu guibg=brown gui=bold
@@ -139,7 +152,7 @@ let $PAGER=''
 " ----------------------------------------------------- {{{
 
 " clear the search buffer
-nnoremap <C-l> :let @/=""<CR>
+nnoremap <C-k> :let @/=""<CR>
 " good man page stuff
 runtime ftplugin/man.vim
 nnoremap <silent> K :exe "Man" expand('<cword>') <CR>
@@ -148,7 +161,8 @@ nnoremap <silent> K :exe "Man" expand('<cword>') <CR>
 autocmd FileType d nnoremap <F12> :!ctags -R . /usr/lib/gcc/x86_64-linux-gnu/7/include/d <CR>
 autocmd FileType c,cpp nnoremap <F12> :!ctags -R . <CR>
 autocmd FileType cpp nnoremap <F12> :!ctags -R . -R --fields=+iaS --extra=+q <CR>
-
+autocmd FileType python nnoremap <F12> :!ctags -R . <CR>
+" autocmd FileType py nnoremap <F12> :!ctags -R . -R --fields=+iaS --extra=+q <CR>
 " save current buffer
 nnoremap <C-s> :write <CR>
 inoremap <C-s> <Esc>:write<Cr>
@@ -173,7 +187,7 @@ nnoremap L $
 " going into normal mode without esc
 inoremap jk <Esc>
 
-nnoremap <Space> zz 
+nnoremap <Space> zz
 
 nnoremap <C-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR>
@@ -188,21 +202,13 @@ nnoremap <Leader>a :Ack!<Space>
 " in vimdiff, go to next diff and obtain it
 nnoremap <Leader>d ]cdo
 
-" start of line
 cnoremap <C-A>		<Home>
-" back one character
 cnoremap <C-B>		<Left>
-" delete character under cursor
 cnoremap <C-D>		<Del>
-" end of line
 cnoremap <C-E>		<End>
-" forward one character
 cnoremap <C-F>		<Right>
-" recall newer command-line
 cnoremap <C-N>		<Down>
-" recall previous (older) command-line
 cnoremap <C-P>		<Up>
-" back one word
 cnoremap <M-b>	 	<S-Left>
 " forward one word
 cnoremap <M-f>		<S-Right>
@@ -218,6 +224,8 @@ vnoremap // y/<C-R>"<CR>
 "               jumping to a particular line, not the end of the
 "               buffer). Use [count]|gg| if you don't want this.
 nnoremap <expr> G (v:count ? 'Gzv' : 'G')
+
+nmap <C-]> g<C-]>
 
 " }}}
 
@@ -249,10 +257,30 @@ set runtimepath^=~/.vim/plugin/
 let g:ctrlp_root_markers = ['.ctrlp|.git|.bzr|.svn']
 let g:ctrlp_max_files=20000
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)|cov$|bin',
-    \ 'file': '\v\.(pdf|exe|so|dll|o|deps|fdeps)$|\.ctrlp|tags|\.\~.\~',
+    \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)|cov|bin|routemm/lib/|routemm/share|release',
+    \ 'file': '\v\.(pdf|exe|so|dll|o|deps|fdeps|pyc)$|\.ctrlp|tags|prof|\.\~.\~',
     \ }
+
+let g:ctrlp_user_command = {
+  \ 'types': {
+    \ 1: ['.git', 'cd %s && git ls-files --cached --exclude-standard --others'],
+    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+    \ },
+  \ 'fallback': 'find %s -type f'
+  \ }
 
 autocmd! FileType qf nnoremap <buffer> <C-V> <C-w><Enter><C-w>H
 
 
+" YCM
+" let g:ycm_confirm_extra_conf = 1
+" let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+
+" work-around to copy selected text to system clipboard
+" " and prevent it from clearing clipboard when using ctrl+z (depends on xsel)
+function! CopyText()
+  normal gv"+y
+  :call system('xsel -ib', getreg('+'))
+endfunction
+
+vmap <leader>y :call CopyText()<CR>

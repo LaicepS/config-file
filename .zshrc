@@ -10,12 +10,22 @@ HISTSIZE=50000
 SAVEHIST=50000
 setopt autocd
 
+autoload -Uz prompt_subst
+setopt prompt_subst
+
+autoload -Uz vcs_info
+precmd() { vcs_info }
+
+# Format the vcs_info_msg_0_ variable
+zstyle ':vcs_info:git:*' formats '%b'
+
+
 # Report the status of background jobs immediately, rather than
 # waiting until just before printing a prompt.
 setopt notify
 
 setopt appendhistory autocd
-setopt inc_append_history share_history
+setopt inc_append_history
 
 # ignore duplicates in history
 setopt hist_ignore_all_dups
@@ -48,11 +58,12 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 
-# The following lines configure zsh in emacs edit mode 
+# The following lines configure zsh in emacs edit mode
 bindkey '^U' backward-kill-line
 bindkey '^K' kill-line
 bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
+bindkey '^[q' push-line
 
 autoload -U select-word-style
 select-word-style bash
@@ -76,8 +87,7 @@ compinit
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-
-PS1="%M@%B %{$fg[magenta]%}%d%{$reset_color%} %? %% %b"
+PROMPT='%{$bg[white]%}%n@%M%B %{$fg[magenta]%}%~%{$reset_color%}%b ${vcs_info_msg_0_} %? %% '
 
 # some more ls aliases
 alias ls='ls --color'
@@ -88,7 +98,10 @@ alias sl=ls
 
 
 ## Vim stuff
+stty stop ''
+stty start ''
 stty -ixon
+stty -ixoff
 # set vim as the man page viewer with expected behavior
 export MANPAGER="/bin/sh -c \"unset MANPAGER;col -b -x | \
     vim -R -c 'set ft=man nomod nolist' -c 'map q :q<CR>' \
@@ -105,7 +118,6 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 
 alias g="gvim --servername GVIM"
-alias vim="vim --servername GVIM"
 alias gtab="gvim --servername GVIM --remote-tab"
 
 alias fork='gnome-terminal --working-directory="$PWD"'
@@ -114,8 +126,14 @@ export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 export dn=/dev/null
 
-REPORTTIME=30
-TIMEFMT=$'%J %E\t'
-
 alias ccat="pygmentize -g"
 alias gg="google-chrome"
+source ~/opt/git-subrepo/.rc
+
+export PATH="~/bin:/usr/lib/ccache:~/.local/bin:"$PATH""
+
+alias gitblame='git log -p -M --follow --stat --'
+alias dco=docker-compose
+
+export WORKON_HOME=~/.virtualenvs
+source /etc/bash_completion.d/virtualenvwrapper
