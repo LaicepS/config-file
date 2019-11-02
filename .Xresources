@@ -3,3 +3,6 @@ xterm*foreground: black
 
 XTerm*faceName: Monospace:style=Regular
 XTerm*faceSize: 10
+
+XTerm*eightBitInput: false
+XTerm*saveLines: 100000

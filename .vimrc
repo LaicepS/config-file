@@ -76,6 +76,9 @@ set smarttab      " smart tabs
 set nocp " needed for ctags
 set backspace=2 " define backspace behaviour
 set tabstop=8   " set softtabstop instead
+set expandtab
+set shiftwidth=4
+set softtabstop=4
 set showmode
 set showcmd
 set ruler

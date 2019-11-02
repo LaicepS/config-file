@@ -128,12 +128,8 @@ export dn=/dev/null
 
 alias ccat="pygmentize -g"
 alias gg="google-chrome"
-source ~/opt/git-subrepo/.rc
 
 export PATH="~/bin:/usr/lib/ccache:~/.local/bin:"$PATH""
 
 alias gitblame='git log -p -M --follow --stat --'
 alias dco=docker-compose
-
-export WORKON_HOME=~/.virtualenvs
-source /etc/bash_completion.d/virtualenvwrapper
