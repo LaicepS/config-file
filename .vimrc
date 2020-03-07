@@ -63,22 +63,19 @@ filetype plugin on
 filetype indent on
 
 if has("gui_running")
-  colorscheme morning
+  colorscheme  desert
 endif
 
 " }}}
 
 "  SETs
 " ----------------------------------------------------- {{{
-set background=light
+set background=dark
 set smartindent   " smart code indentation
 set smarttab      " smart tabs
 set nocp " needed for ctags
 set backspace=2 " define backspace behaviour
 set tabstop=8   " set softtabstop instead
-set expandtab
-set shiftwidth=4
-set softtabstop=4
 set showmode
 set showcmd
 set ruler
@@ -203,7 +200,7 @@ cnoreabbrev Ack Ack!
 nnoremap <Leader>a :Ack!<Space>
 
 " in vimdiff, go to next diff and obtain it
-nnoremap <Leader>d ]cdo
+nnoremap <Leader>f ]cdo
 
 cnoremap <C-A>		<Home>
 cnoremap <C-B>		<Left>
@@ -228,6 +225,17 @@ vnoremap // y/<C-R>"<CR>
 "               buffer). Use [count]|gg| if you don't want this.
 nnoremap <expr> G (v:count ? 'Gzv' : 'G')
 
+nnoremap <leader>cs :let @*=expand("%")<CR>
+nnoremap <leader>cl :let @*=expand("%:p")<CR>
+" nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <leader>v :vsplit \| YcmCompleter GoTo<CR>
+nnoremap <leader>s :split \| YcmCompleter GoTo<CR>
+nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>t :YcmCompleter GetType<CR>
+nnoremap <F5> :!git dt <C-R>% <CR>
+nnoremap <F6> :make -j8 -C release/ <CR>
+
 nmap <C-]> g<C-]>
 
 " }}}
@@ -239,6 +247,12 @@ augroup general
 	autocmd!
 	autocmd VimResized * exe "normal! \<c-w>="
 augroup END
+
+function! Formatonsave()
+  let l:formatdiff = 1
+  py3f /usr/share/clang/clang-format-7/clang-format.py
+endfunction
+autocmd BufWritePre *.h,*.cc,*.cpp call Formatonsave()
 
 " changing fold method for vim files
 " vimscript file settings {{{
