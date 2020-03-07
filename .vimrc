@@ -36,7 +36,6 @@ Plugin 'mileszs/ack.vim'
 
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'kien/ctrlp.vim'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'mhinz/vim-signify'
 
 " All of your Plugins must be added before the following line
