@@ -1,0 +1,16 @@
+[user]
+    email = dorian.haglund@gmail.com
+    name = Dorian Haglund
+[core]
+	pager = less -F -X
+[push]
+	default = simple
+[difftool]
+    prompt = 0
+
+[diff]
+    tool = gvimdiff
+
+[alias]
+    dt = difftool
+    co = checkout

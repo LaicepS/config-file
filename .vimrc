@@ -1,3 +1,4 @@
+set encoding=utf-8
 " Vundle stuff
 " ----------------------------------------------------- {{{
 set nocompatible              " be iMproved, required
@@ -62,7 +63,7 @@ filetype plugin on
 filetype indent on
 
 if has("gui_running")
-  colorscheme  desert
+  colorscheme industry 
 endif
 
 " }}}
@@ -79,8 +80,8 @@ set showmode
 set showcmd
 set ruler
 set smartcase
-set textwidth=120
-set shiftwidth=4
+set textwidth=80
+set shiftwidth=2
 set nonu " line number
 set hlsearch " highlight search
 set incsearch " search as typing
@@ -102,12 +103,19 @@ set t_Co=256
 set mouse=a
 
 " Don't assume first-match when completing file names.
-set wildmode=longest,list
+"set wildmode=longest,list
+set wildmenu
+set path+=**
 
 set completeopt=menu,menuone,longest
+
 set pumheight=15
 set guioptions-=m
 set guioptions-=T
+
+"remove scroll bars
+set guioptions-=r
+set guioptions-=L
 
 " move backup to .vim/tmp
 set backupdir=~/.vim/tmp
@@ -119,6 +127,7 @@ set autoread
 set splitright
 
 set nowrap
+set colorcolumn=80
 
 " disable annoying bell sound in gvim
 set noerrorbells visualbell t_vb=
@@ -226,14 +235,17 @@ nnoremap <expr> G (v:count ? 'Gzv' : 'G')
 
 nnoremap <leader>cs :let @*=expand("%")<CR>
 nnoremap <leader>cl :let @*=expand("%:p")<CR>
+nnoremap <leader>cS :let @+=expand("%")<CR>
+nnoremap <leader>cL :let @+=expand("%:p")<CR>
 " nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>g :YcmCompleter GoTo<CR>
 nnoremap <leader>v :vsplit \| YcmCompleter GoTo<CR>
 nnoremap <leader>s :split \| YcmCompleter GoTo<CR>
 nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>t :YcmCompleter GetType<CR>
+nnoremap <leader>r :YcmCompleter RefactorRename 
 nnoremap <F5> :!git dt <C-R>% <CR>
-nnoremap <F6> :make -j8 -C release/ <CR>
+nnoremap <F6> :make -j8 -C build/ <CR>
 
 nmap <C-]> g<C-]>
 
@@ -249,7 +261,7 @@ augroup END
 
 function! Formatonsave()
   let l:formatdiff = 1
-  py3f /usr/share/clang/clang-format-7/clang-format.py
+  py3f /usr/share/clang/clang-format-10/clang-format.py
 endfunction
 autocmd BufWritePre *.h,*.cc,*.cpp call Formatonsave()
 
@@ -270,27 +282,29 @@ set runtimepath^=~/.vim/plugin/
 
 " Ctrlp
 
-let g:ctrlp_root_markers = ['.ctrlp|.git|.bzr|.svn']
+let g:ctrlp_root_markers = ['.ctrlp']
 let g:ctrlp_max_files=20000
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)|cov|bin|routemm/lib/|routemm/share|release',
+    \ 'dir':  '\v[\/]\.(git|hg|svn|bzr|clangd)|bin|release|debug|build|third_party$',
     \ 'file': '\v\.(pdf|exe|so|dll|o|deps|fdeps|pyc)$|\.ctrlp|tags|prof|\.\~.\~',
     \ }
 
-let g:ctrlp_user_command = {
-  \ 'types': {
-    \ 1: ['.git', 'cd %s && git ls-files --cached --exclude-standard --others'],
-    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-    \ },
-  \ 'fallback': 'find %s -type f'
-  \ }
+" let g:ctrlp_user_command = {
+"   \ 'types': {
+"     \ 1: ['.git', 'cd %s && git ls-files --cached --exclude-standard --others'],
+"     \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+"     \ },
+"   \ 'fallback': 'find %s -type f'
+"   \ }
 
 autocmd! FileType qf nnoremap <buffer> <C-V> <C-w><Enter><C-w>H
 
 
 " YCM
-" let g:ycm_confirm_extra_conf = 1
-" let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+" let g:ycm_confirm_extra_conf = 0
+" let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf_test.py'
+"
+let g:ycm_clangd_args=['--header-insertion=never']
 
 " work-around to copy selected text to system clipboard
 " " and prevent it from clearing clipboard when using ctrl+z (depends on xsel)

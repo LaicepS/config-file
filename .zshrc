@@ -4,6 +4,10 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+
+# report the time of a command if it exceed 30s
+REPORTTIME=30
+
 #Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=50000
@@ -87,7 +91,7 @@ compinit
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-PROMPT='%{$bg[white]%}%n@%M%B %{$fg[magenta]%}%~%{$reset_color%}%b ${vcs_info_msg_0_} %? %% '
+PROMPT='%{$bg[black]%}%n@%M%B %{$fg[magenta]%}%~%{$reset_color%}%b ${vcs_info_msg_0_} %? %% '
 
 # some more ls aliases
 alias ls='ls --color'
@@ -110,8 +114,6 @@ export MANPAGER="/bin/sh -c \"unset MANPAGER;col -b -x | \
 
 export SYSTEMD_PAGER=""
 
-export STREAM_ROOT=~/streams
-
 alias bdiff='bzr diff --using=colordiff --diff-options="-u"'
 alias m='make -j8'
 alias grep='grep --color=auto'
@@ -129,7 +131,22 @@ export dn=/dev/null
 alias ccat="pygmentize -g"
 alias gg="google-chrome"
 
-export PATH="~/bin:/usr/lib/ccache:~/.local/bin:"$PATH""
+export PATH="/home/dorian/bin:/usr/lib/ccache:/home/dorian/.local/bin:"$PATH""
 
 alias gitblame='git log -p -M --follow --stat --'
 alias dco=docker-compose
+alias vim=gvim
+source /home/dorian/.config/broot/launcher/bash/br
+
+# OPAM configuration
+. /home/dorian/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+export WINEPREFIX=~/.wine32
+export WINEARCH=win32
+
+
+function condastart {
+  __conda_setup="$('/home/dorian/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+    eval "$__conda_setup"
+  conda activate nlu
+}
