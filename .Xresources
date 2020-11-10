@@ -1,7 +1,7 @@
 xterm*background: black
 xterm*foreground: white
 
-XTerm*faceName: Monospace:style=Regular
+XTerm*faceName: Monospace
 XTerm*faceSize: 10
 
 XTerm*eightBitInput: false

@@ -245,7 +245,7 @@ nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>t :YcmCompleter GetType<CR>
 nnoremap <leader>r :YcmCompleter RefactorRename 
 nnoremap <F5> :!git dt <C-R>% <CR>
-nnoremap <F6> :make -j8 -C build/ <CR>
+nnoremap <F6> :!g++ main.cpp -o kr && ./kr <CR>
 
 nmap <C-]> g<C-]>
 
@@ -314,3 +314,7 @@ function! CopyText()
 endfunction
 
 vmap <leader>y :call CopyText()<CR>
+
+" prevent screen buggy refresh on xterm
+" (https://groups.google.com/g/vim_dev/c/GR9YG8TZy6o?pli=1)
+set ambiwidth=single

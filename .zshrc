@@ -126,16 +126,13 @@ alias fork='gnome-terminal --working-directory="$PWD"'
 
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
-export dn=/dev/null
 
 alias ccat="pygmentize -g"
 alias gg="google-chrome"
 
-export PATH="/home/dorian/bin:/usr/lib/ccache:/home/dorian/.local/bin:"$PATH""
+export PATH="/usr/local/go/bin:/home/dorian/bin:/usr/lib/ccache:/home/dorian/.local/bin:"$PATH""
 
 alias gitblame='git log -p -M --follow --stat --'
-alias dco=docker-compose
-alias vim=gvim
 source /home/dorian/.config/broot/launcher/bash/br
 
 # OPAM configuration
