@@ -1,6 +1,6 @@
-set encoding=utf-8
 " Vundle stuff
 " ----------------------------------------------------- {{{
+set encoding=utf-8
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -34,7 +34,6 @@ Plugin 'gmarik/Vundle.vim'
 
 " YCM
 Plugin 'mileszs/ack.vim'
-
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'kien/ctrlp.vim'
 Plugin 'mhinz/vim-signify'
@@ -63,7 +62,7 @@ filetype plugin on
 filetype indent on
 
 if has("gui_running")
-  colorscheme industry 
+  colorscheme  desert
 endif
 
 " }}}
@@ -75,12 +74,12 @@ set smartindent   " smart code indentation
 set smarttab      " smart tabs
 set nocp " needed for ctags
 set backspace=2 " define backspace behaviour
-set tabstop=8   " set softtabstop instead
+set tabstop=8 softtabstop=0 expandtab 
 set showmode
 set showcmd
 set ruler
 set smartcase
-set textwidth=80
+set textwidth=0
 set shiftwidth=2
 set nonu " line number
 set hlsearch " highlight search
@@ -103,19 +102,13 @@ set t_Co=256
 set mouse=a
 
 " Don't assume first-match when completing file names.
-"set wildmode=longest,list
 set wildmenu
-set path+=**
+set wildmode=longest,list
 
 set completeopt=menu,menuone,longest
-
 set pumheight=15
 set guioptions-=m
 set guioptions-=T
-
-"remove scroll bars
-set guioptions-=r
-set guioptions-=L
 
 " move backup to .vim/tmp
 set backupdir=~/.vim/tmp
@@ -127,7 +120,6 @@ set autoread
 set splitright
 
 set nowrap
-set colorcolumn=80
 
 " disable annoying bell sound in gvim
 set noerrorbells visualbell t_vb=
@@ -203,6 +195,10 @@ nnoremap <C-S-tab> :tabprevious<CR>
 nnoremap <F4> :Ack! -w <C-r><C-w><CR>
 vnoremap <F4> y :Ack! -w <C-r>"<CR>
 
+" copy to system clipboard on mac
+nnoremap <leader>' :!echo <C-r>" \| pbcopy<CR><CR>
+vnoremap <leader>' y:!echo <C-r>" \| pbcopy<CR><CR>
+
 " this tells ack not to jump to the first occurence of a search by default
 cnoreabbrev Ack Ack!
 nnoremap <Leader>a :Ack!<Space>
@@ -233,19 +229,17 @@ vnoremap // y/<C-R>"<CR>
 "               buffer). Use [count]|gg| if you don't want this.
 nnoremap <expr> G (v:count ? 'Gzv' : 'G')
 
-nnoremap <leader>cs :let @*=expand("%")<CR>
-nnoremap <leader>cl :let @*=expand("%:p")<CR>
-nnoremap <leader>cS :let @+=expand("%")<CR>
-nnoremap <leader>cL :let @+=expand("%:p")<CR>
+nnoremap <leader>cs :!echo -n %:t \| pbcopy <CR><CR>
+nnoremap <leader>cl :!echo -n %:p \| pbcopy <CR><CR>
 " nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>g :YcmCompleter GoTo<CR>
 nnoremap <leader>v :vsplit \| YcmCompleter GoTo<CR>
 nnoremap <leader>s :split \| YcmCompleter GoTo<CR>
 nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>t :YcmCompleter GetType<CR>
+nnoremap <leader>t :tj <C-R><C-W><CR>
 nnoremap <leader>r :YcmCompleter RefactorRename 
-nnoremap <F5> :!git dt <C-R>% <CR>
-nnoremap <F6> :!g++ main.cpp -o kr && ./kr <CR>
+nnoremap <F5> :!git dt <C-R>% <CR> e
+nnoremap <F6> :make --no-print-directory -j$(nproc) -C /opt/home/users/dorian.haglund/build-backend/trunk/wambackend <CR>
 
 nmap <C-]> g<C-]>
 
@@ -261,9 +255,16 @@ augroup END
 
 function! Formatonsave()
   let l:formatdiff = 1
-  py3f /usr/share/clang/clang-format-10/clang-format.py
+  py3f /usr/share/clang/clang-format-7/clang-format.py
 endfunction
-autocmd BufWritePre *.h,*.cc,*.cpp call Formatonsave()
+" autocmd BufWritePre *.h,*.cc,*.cpp call Formatonsave()
+
+function! GoFormatonsave()
+  let save_pos = getpos(".")
+  silent %!gofmt
+  call setpos('.', save_pos)
+endfunction
+autocmd BufWritePre *.go call GoFormatonsave()
 
 " changing fold method for vim files
 " vimscript file settings {{{
@@ -277,17 +278,22 @@ augroup END
 " }}}
 "
 
+" set foldmethod=indent
+" set foldlevel=1
+" set foldclose=all
+
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 set runtimepath^=~/.vim/plugin/
 
 " Ctrlp
 
-let g:ctrlp_root_markers = ['.ctrlp']
+let g:ctrlp_root_markers = ['.ctrlp|.git|.bzr|.svn']
 let g:ctrlp_max_files=20000
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn|bzr|clangd)|bin|release|debug|build|third_party$',
-    \ 'file': '\v\.(pdf|exe|so|dll|o|deps|fdeps|pyc)$|\.ctrlp|tags|prof|\.\~.\~',
+        \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)|build|cov|bin|tests/data',
+     	\ 'file': '\v\.(pdf|exe|so|dll|o|deps|fdeps|pyc|lua|cmake|make)$|-curr|\.ctrlp|tags|prof|\.\~.\~',
     \ }
+
 
 " let g:ctrlp_user_command = {
 "   \ 'types': {
@@ -301,10 +307,13 @@ autocmd! FileType qf nnoremap <buffer> <C-V> <C-w><Enter><C-w>H
 
 
 " YCM
-" let g:ycm_confirm_extra_conf = 0
-" let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf_test.py'
-"
-let g:ycm_clangd_args=['--header-insertion=never']
+let g:ycm_auto_hover = ''
+let g:ycm_confirm_extra_conf = 0
+" let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+
+highlight YcmErrorSection ctermfg=23
+highlight YcmWarningSection ctermfg=22
+
 
 " work-around to copy selected text to system clipboard
 " " and prevent it from clearing clipboard when using ctrl+z (depends on xsel)
@@ -313,8 +322,13 @@ function! CopyText()
   :call system('xsel -ib', getreg('+'))
 endfunction
 
-vmap <leader>y :call CopyText()<CR>
 
-" prevent screen buggy refresh on xterm
-" (https://groups.google.com/g/vim_dev/c/GR9YG8TZy6o?pli=1)
-set ambiwidth=single
+function! FormatJSON()
+ normal "ad%
+ redir! system('jq . ', getreg('a'))
+endfunction
+nnoremap =j :call FormatJSON() <CR>
+
+hi DiffText ctermbg=1
+
+"map <leader>y :call CopyText()<CR>
