@@ -301,6 +301,9 @@ autocmd! FileType qf nnoremap <buffer> <C-V> <C-w><Enter><C-w>H
 
 
 " YCM
+highlight YcmErrorSection ctermfg=23
+highlight YcmWarningSection ctermfg=22
+
 " let g:ycm_confirm_extra_conf = 0
 " let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf_test.py'
 "
