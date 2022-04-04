@@ -133,7 +133,7 @@ alias gg="google-chrome"
 export PATH="/usr/local/go/bin:/home/dorian/bin:/usr/lib/ccache:/home/dorian/.local/bin:"$PATH""
 
 alias gitblame='git log -p -M --follow --stat --'
-source /home/dorian/.config/broot/launcher/bash/br
+#source /home/dorian/.config/broot/launcher/bash/br
 
 # OPAM configuration
 . /home/dorian/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
@@ -147,3 +147,8 @@ function condastart {
     eval "$__conda_setup"
   conda activate nlu
 }
+
+# compatibility with bash completion
+autoload bashcompinit && bashcompinit
+
+source ~/.tisenv

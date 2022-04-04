@@ -1,5 +1,5 @@
 [user]
-    email = dorian.haglund@gmail.com
+    email = dorian.haglund@trust-in-soft.com
     name = Dorian Haglund
 [core]
 	pager = less -F -X
@@ -9,7 +9,7 @@
     prompt = 0
 
 [diff]
-    tool = gvimdiff
+    tool = vimdiff
 
 [alias]
     dt = difftool
