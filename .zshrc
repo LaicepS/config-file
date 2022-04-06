@@ -133,21 +133,15 @@ alias ccat="pygmentize -g"
 alias gg="google-chrome"
 
 alias gitblame='git log -p -M --follow --stat --'
-<<<<<<< HEAD
 #source /home/dorian/.config/broot/launcher/bash/br
 
-# OPAM configuration
-. /home/dorian/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-=======
 alias tmux='tmux -u'
->>>>>>> master
 
 
 export LANG=
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
-<<<<<<< HEAD
 function condastart {
   __conda_setup="$('/home/dorian/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
     eval "$__conda_setup"
@@ -157,8 +151,7 @@ function condastart {
 # compatibility with bash completion
 autoload bashcompinit && bashcompinit
 
-source ~/.tisenv
-=======
 # opam configuration
 [[ ! -r /home/dorian/.opam/opam-init/init.zsh ]] || source /home/dorian/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
->>>>>>> master
+
+source ~/.tisenv
