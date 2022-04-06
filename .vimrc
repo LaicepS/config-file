@@ -124,6 +124,7 @@ set splitright
 
 set nowrap
 set colorcolumn=80
+set hidden
 
 " disable annoying bell sound in gvim
 set noerrorbells visualbell t_vb=
