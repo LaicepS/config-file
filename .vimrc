@@ -245,6 +245,7 @@ nnoremap <leader>r :YcmCompleter RefactorRename
 nnoremap <F5> :!git dt <C-R>% <CR> e
 
 nmap <C-]> g<C-]>
+nnoremap ,, <C-w><C-w>
 
 " }}}
 
