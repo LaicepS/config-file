@@ -295,7 +295,7 @@ let g:ctrlp_root_markers = ['.ctrlp|.git|.bzr|.svn']
 let g:ctrlp_max_files=20000
 let g:ctrlp_custom_ignore = {
         \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)|build|cov|bin|tests/data',
-     	\ 'file': '\v\.(pdf|exe|so|dll|o|deps|fdeps|pyc|lua|cmake|make)$|-curr|\.ctrlp|tags|prof|\.\~.\~',
+     	\ 'file': '\v\.(d|o|pdf|exe|so|dll|o|deps|fdeps|pyc|lua|cmake|make)$|-curr|\.ctrlp|tags|prof|\.\~.\~',
     \ }
 
 " let g:ctrlp_user_command = {

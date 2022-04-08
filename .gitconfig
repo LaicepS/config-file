@@ -2,15 +2,16 @@
     email = dorian.haglund@trust-in-soft.com
     name = Dorian Haglund
 [core]
-	pager = less -F -X
+    pager = less -F -X
 [push]
-	default = simple
+    default = simple
 [difftool]
     prompt = 0
 
 [diff]
-    tool = vimdiff
+    tool = gvimdiff
 
 [alias]
     dt = difftool
     co = checkout
+    st = status
