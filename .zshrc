@@ -136,6 +136,7 @@ alias gitblame='git log -p -M --follow --stat --'
 #source /home/dorian/.config/broot/launcher/bash/br
 
 alias tmux='tmux -u'
+alias vim=gvim
 
 
 export LANG=
@@ -152,6 +153,8 @@ function condastart {
 autoload bashcompinit && bashcompinit
 
 # opam configuration
-[[ ! -r /home/dorian/.opam/opam-init/init.zsh ]] || source /home/dorian/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+if [[ -r /home/dorian/.opam/opam-init/init.zsh ]]; then
+  source /home/dorian/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+fi
 
 source ~/.tisenv
