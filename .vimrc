@@ -236,12 +236,18 @@ nnoremap <leader>cl :let @*=expand("%:p")<CR>
 nnoremap <leader>cS :let @+=expand("%")<CR>
 nnoremap <leader>cL :let @+=expand("%:p")<CR>
 " nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>g :YcmCompleter GoTo<CR>
-nnoremap <leader>v :vsplit \| YcmCompleter GoTo<CR>
-nnoremap <leader>s :split \| YcmCompleter GoTo<CR>
-nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>t :tj <C-R><C-W><CR>
-nnoremap <leader>r :YcmCompleter RefactorRename 
+autocmd FileType c,cpp nnoremap <buffer> <leader>g :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp nnoremap <buffer> <leader>v :vsplit \| YcmCompleter GoTo<CR>
+autocmd FileType c,cpp nnoremap <buffer> <leader>s :split \| YcmCompleter GoTo<CR>
+autocmd FileType c,cpp nnoremap <buffer> <leader>d :YcmCompleter GoToDefinition<CR>
+autocmd FileType c,cpp nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
+autocmd FileType c,cpp nnoremap <buffer> <leader>r :YcmCompleter RefactorRename 
+
+autocmd FileType ocaml nnoremap <buffer> <leader>g :MerlinLocate <CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>v :vsplit \| MerlinLocate<CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>s :split \| MerlinLocate<CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>r :MerlinRename
+
 nnoremap <F5> :!git dt <C-R>% <CR> e
 
 nmap <C-]> g<C-]>

@@ -143,18 +143,7 @@ export LANG=
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
-function condastart {
-  __conda_setup="$('/home/dorian/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-    eval "$__conda_setup"
-  conda activate nlu
-}
-
 # compatibility with bash completion
 autoload bashcompinit && bashcompinit
-
-# opam configuration
-if [[ -r /home/dorian/.opam/opam-init/init.zsh ]]; then
-  source /home/dorian/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-fi
 
 source ~/.tisenv
