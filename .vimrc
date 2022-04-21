@@ -62,14 +62,14 @@ filetype plugin on
 filetype indent on
 
 if has("gui_running")
-  colorscheme  desert
+  colorscheme  one-light
 endif
 
 " }}}
 
 "  SETs
 " ----------------------------------------------------- {{{
-set background=dark
+set background=light
 set smartindent   " smart code indentation
 set smarttab      " smart tabs
 set nocp " needed for ctags
@@ -239,7 +239,6 @@ nnoremap <leader>cL :let @+=expand("%:p")<CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>g :YcmCompleter GoTo<CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>v :vsplit \| YcmCompleter GoTo<CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>s :split \| YcmCompleter GoTo<CR>
-autocmd FileType c,cpp nnoremap <buffer> <leader>d :YcmCompleter GoToDefinition<CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>r :YcmCompleter RefactorRename 
 
@@ -248,7 +247,7 @@ autocmd FileType ocaml nnoremap <buffer> <leader>v :vsplit \| MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>s :split \| MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>r :MerlinRename
 
-nnoremap <F5> :!git dt <C-R>% <CR> e
+nnoremap <leader>d :!git dt <C-R>% <CR> e
 
 nmap <C-]> g<C-]>
 nnoremap ,, <C-w><C-w>
@@ -343,4 +342,5 @@ hi DiffText ctermbg=1
 let g:opamshare = substitute(system('opam var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 
+let g:airline_theme='one'
 "map <leader>y :call CopyText()<CR>
