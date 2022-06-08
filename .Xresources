@@ -10,7 +10,7 @@ XTerm*saveLines: 100000
 ! Atom One Light theme
 xterm*background: #f9f9f9
 xterm*foreground: #383a42
-xterm*cursorColor: #d0d0d0
+xterm*cursorColor: #000000
 xterm*color0: #000000
 xterm*color1: #E45649
 xterm*color2: #50A14F

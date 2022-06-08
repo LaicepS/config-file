@@ -62,7 +62,7 @@ filetype plugin on
 filetype indent on
 
 if has("gui_running")
-  colorscheme  one-light
+  colorscheme  default
 endif
 
 " }}}
@@ -241,6 +241,7 @@ autocmd FileType c,cpp nnoremap <buffer> <leader>v :vsplit \| YcmCompleter GoTo<
 autocmd FileType c,cpp nnoremap <buffer> <leader>s :split \| YcmCompleter GoTo<CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>r :YcmCompleter RefactorRename 
+autocmd FileType c,cpp nnoremap <buffer> <leader>f :YcmCompleter FixIt<CR> 
 
 autocmd FileType ocaml nnoremap <buffer> <leader>g :MerlinLocate <CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>v :vsplit \| MerlinLocate<CR>
