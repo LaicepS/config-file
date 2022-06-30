@@ -37,6 +37,8 @@ Plugin 'mileszs/ack.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'kien/ctrlp.vim'
 Plugin 'mhinz/vim-signify'
+Plugin 'neoclide/coc.nvim'
+Plugin 'vim-syntastic/syntastic'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -243,10 +245,14 @@ autocmd FileType c,cpp nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>r :YcmCompleter RefactorRename 
 autocmd FileType c,cpp nnoremap <buffer> <leader>f :YcmCompleter FixIt<CR> 
 
+autocmd FileType ocaml nnoremap <buffer> <leader>t :MerlinTypeOf <CR>
+autocmd FileType ocaml vnoremap <buffer> <leader>t :MerlinTypeOfSel <CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>g :MerlinLocate <CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>v :vsplit \| MerlinLocate<CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>s :split \| MerlinLocate<CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>r :MerlinRename
+autocmd FileType ocaml nnoremap <buffer> <leader>v :vsplit \| MerlinLocate <CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>s :split \| MerlinLocate <CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>f :MerlinILocate<CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>s :MerlinLocate<CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>r :MerlinRename 
 
 nnoremap <leader>d :!git dt <C-R>% <CR> e
 
@@ -345,3 +351,23 @@ execute "set rtp+=" . g:opamshare . "/merlin/vim"
 
 let g:airline_theme='one'
 "map <leader>y :call CopyText()<CR>
+
+" Syntastic
+
+" recommended settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+
+let g:syntastic_ocaml_checkers = ['merlin']
+ 
+
+" Merlin
+let g:merlin_display_error_list = 0
+let g:merlin_split_method = "never"

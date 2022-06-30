@@ -27,3 +27,5 @@ xterm*color12: #4078F2
 xterm*color13: #A626A4
 xterm*color14: #0184BC
 xterm*color15: #ffffff
+
+XTerm*selectToClipboard: true
