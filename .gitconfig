@@ -4,9 +4,10 @@
 [core]
     pager = less -F -X
 [push]
-    default = simple
+    default = current
 [difftool]
     prompt = 0
+    tool = gvimdiff
 
 [diff]
     tool = gvimdiff
@@ -15,3 +16,10 @@
     dt = difftool
     co = checkout
     st = status
+    adog = log --all --decorate --oneline --graph
+    follow = log -p -M --follow --stat --
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

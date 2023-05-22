@@ -1,31 +1,74 @@
 ! xterm*background: black
 ! xterm*foreground: white
 
-XTerm*faceName: Monospace
-XTerm*faceSize: 10
+! XTerm*faceName: Monospace
+! XTerm*faceSize: 10
+! 
+! XTerm*eightBitInput: false
+! XTerm*saveLines: 100000
+! 
+! ! Atom One Light theme
+! xterm*background: #f9f9f9
+! xterm*foreground: #383a42
+! xterm*cursorColor: #000000
+! xterm*color0: #000000
+! xterm*color1: #E45649
+! xterm*color2: #50A14F
+! xterm*color3: #986801
+! xterm*color4: #4078F2
+! xterm*color5: #A626A4
+! xterm*color6: #0184BC
+! xterm*color7: #A0A1A7
+! xterm*color8: #5c6370
+! xterm*color9: #e06c75
+! xterm*color10: #50A14F
+! xterm*color11: #986801
+! xterm*color12: #4078F2
+! xterm*color13: #A626A4
+! xterm*color14: #0184BC
+! xterm*color15: #ffffff
+! 
+*selectToClipboard: true
+*.scrollBar: false
+*saveLines: 100000
 
-XTerm*eightBitInput: false
-XTerm*saveLines: 100000
 
-! Atom One Light theme
-xterm*background: #f9f9f9
-xterm*foreground: #383a42
-xterm*cursorColor: #000000
-xterm*color0: #000000
-xterm*color1: #E45649
-xterm*color2: #50A14F
-xterm*color3: #986801
-xterm*color4: #4078F2
-xterm*color5: #A626A4
-xterm*color6: #0184BC
-xterm*color7: #A0A1A7
-xterm*color8: #5c6370
-xterm*color9: #e06c75
-xterm*color10: #50A14F
-xterm*color11: #986801
-xterm*color12: #4078F2
-xterm*color13: #A626A4
-xterm*color14: #0184BC
-xterm*color15: #ffffff
+rxvt*font: Monospace
+rxvt*font-size.step: 10
 
-XTerm*selectToClipboard: true
+! special
+*.foreground:   #ffffff
+*.background:   #1e1e1e
+*.cursorColor:  #ffffff
+
+! black
+*.color0:       #5a7260
+*.color8:       #8da691
+
+! red
+*.color1:       #8f423c
+*.color9:       #eeaa88
+
+! green
+*.color2:       #bbbb88
+*.color10:      #ccc68d
+
+! yellow
+*.color3:       #f9d25b
+*.color11:      #eedd99
+
+! blue
+*.color4:       #e0ba69
+*.color12:      #c9b957
+
+! magenta
+*.color5:       #709289
+*.color13:      #ffcbab
+
+! cyan
+*.color6:       #d13516
+*.color14:      #c25431
+
+! white
+*.color7:       #efe2e0
+*.color15:      #f9f1ed

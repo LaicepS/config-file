@@ -39,6 +39,8 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'mhinz/vim-signify'
 Plugin 'neoclide/coc.nvim'
 Plugin 'vim-syntastic/syntastic'
+Plugin 'vim-scripts/a.vim'
+Plugin 'AndrewRadev/linediff.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -64,8 +66,9 @@ filetype plugin on
 filetype indent on
 
 if has("gui_running")
-  colorscheme  default
+  colorscheme  zellner
 endif
+colorscheme  zellner
 
 " }}}
 
@@ -105,7 +108,7 @@ set mouse=a
 
 " Don't assume first-match when completing file names.
 set wildmenu
-set wildmode=longest,list
+set wildmode=longest:full,full
 
 set completeopt=menu,menuone,longest
 set pumheight=15
@@ -132,6 +135,9 @@ set hidden
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
 
+" don't add a star (*) when adding a new line of comment
+set formatoptions=ql
+
 " cursor color
 highlight Cursor guifg=white guibg=LightRed
 
@@ -147,8 +153,9 @@ if (&filetype != 'text')
     match ExtraWhitespace /\s\+$/
 endif
 
-" set the completion menu to  readable colrors on a dark background
-" highlight Pmenu guibg=brown gui=bold
+" set the completion menu to  readable colors on a dark background
+"highlight Pmenu guibg=blue " gui=bold
+highlight Pmenu guibg=pink
 
 " }}}
 
@@ -199,6 +206,12 @@ nnoremap <Space> zz
 nnoremap <C-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR>
 
+autocmd FileType ocaml nnoremap <F4> :Ack! -t ocaml -w <C-r><C-w><CR>
+autocmd FileType ocaml vnoremap <F4> y :Ack! -t ocaml -w <C-r>"<CR>
+
+autocmd FileType c nnoremap <F4> :Ack! -t cc -w <C-r><C-w><CR>
+autocmd FileType c vnoremap <F4> y :Ack! -t cc -w <C-r>"<CR>
+
 nnoremap <F4> :Ack! -w <C-r><C-w><CR>
 vnoremap <F4> y :Ack! -w <C-r>"<CR>
 
@@ -212,7 +225,6 @@ nnoremap <Leader>f ]cdo
 
 cnoremap <C-A>		<Home>
 cnoremap <C-B>		<Left>
-cnoremap <C-D>		<Del>
 cnoremap <C-E>		<End>
 cnoremap <C-F>		<Right>
 cnoremap <C-N>		<Down>
@@ -244,17 +256,22 @@ autocmd FileType c,cpp nnoremap <buffer> <leader>s :split \| YcmCompleter GoTo<C
 autocmd FileType c,cpp nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>r :YcmCompleter RefactorRename 
 autocmd FileType c,cpp nnoremap <buffer> <leader>f :YcmCompleter FixIt<CR> 
+autocmd FileType c,cpp nnoremap <buffer> <leader>o :!clang-format -i % <CR>
 
 autocmd FileType ocaml nnoremap <buffer> <leader>t :MerlinTypeOf <CR>
 autocmd FileType ocaml vnoremap <buffer> <leader>t :MerlinTypeOfSel <CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>g :MerlinLocate <CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>v :vsplit \| MerlinLocate <CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>s :split \| MerlinLocate <CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>f :MerlinILocate<CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>s :MerlinLocate<CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>s :MerlinLocate
 autocmd FileType ocaml nnoremap <buffer> <leader>r :MerlinRename 
+autocmd FileType ocaml nnoremap <buffer> <leader>o :!ocamlformat -i -q % <CR>
+
+autocmd BufRead intermediate_format.ast set filetype=ocaml
+autocmd BufRead dune set filetype=lisp
 
 nnoremap <leader>d :!git dt <C-R>% <CR> e
+nnoremap <leader>m :A<CR>
 
 nmap <C-]> g<C-]>
 nnoremap ,, <C-w><C-w>
@@ -273,7 +290,14 @@ function! Formatonsave()
   let l:formatdiff = 1
   py3f /usr/share/clang/clang-format-12/clang-format.py
 endfunction
-autocmd BufWritePre *.h,*.cc,*.cpp call Formatonsave()
+" autocmd BufWritePre *.h,*.cc,*.cpp call Formatonsave()
+
+function! CamlFormatonsave()
+  let save_pos = getpos(".")
+  silent %!ocamlformat - --impl -q
+  call setpos('.', save_pos)
+endfunction
+"autocmd BufWritePre *.ml,*.mli call CamlFormatonsave()
 
 function! GoFormatonsave()
   let save_pos = getpos(".")
@@ -303,7 +327,7 @@ set runtimepath^=~/.vim/plugin/
 
 " Ctrlp
 
-let g:ctrlp_root_markers = ['.ctrlp|.git|.bzr|.svn']
+let g:ctrlp_root_markers = ['.ctrlp']
 let g:ctrlp_max_files=20000
 let g:ctrlp_custom_ignore = {
         \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)|build|cov|bin|tests/data',
@@ -359,8 +383,8 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
