@@ -6,11 +6,15 @@
 [push]
     default = current
 [difftool]
-    prompt = 0
+    prompt = false
     tool = gvimdiff
+
+[merge]
+  tool = gvimdiff
 
 [diff]
     tool = gvimdiff
+  relativePaths = true
 
 [alias]
     dt = difftool
@@ -18,8 +22,14 @@
     st = status
     adog = log --all --decorate --oneline --graph
     follow = log -p -M --follow --stat --
+    merges = log --oneline --decorate --color=auto --merges --first-parent
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[credential]
+	helper = store
+[status]
+	relativePaths = true

@@ -37,10 +37,14 @@ Plugin 'mileszs/ack.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'kien/ctrlp.vim'
 Plugin 'mhinz/vim-signify'
-Plugin 'neoclide/coc.nvim'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'tpope/vim-fugitive'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'vim-scripts/a.vim'
+Plugin 'vim-scripts/AnsiEsc.vim'
 Plugin 'AndrewRadev/linediff.vim'
+Plugin 'rust-lang/rust.vim'
+Plugin 'github/copilot.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -65,16 +69,20 @@ syntax on         " syntax highlighting
 filetype plugin on
 filetype indent on
 
+set history=10000
+set viminfo=!,'10000,<50,s10,h,:10000
+
 if has("gui_running")
-  colorscheme  zellner
+  colorscheme  evening
+else
+  colorscheme  default
 endif
-colorscheme  zellner
 
 " }}}
 
 "  SETs
 " ----------------------------------------------------- {{{
-set background=light
+set background=dark
 set smartindent   " smart code indentation
 set smarttab      " smart tabs
 set nocp " needed for ctags
@@ -96,7 +104,7 @@ set cursorcolumn " highlight current col
 set laststatus=2
 " statusline format
 set guifont=Monospace\ 10
-set statusline=%f%m%r%h%w%y[%l,%v]%=%{getcwd()}
+set statusline=%{FugitiveStatusline()}%f%m%r%h%w%y[%l,%v]%=%{getcwd()}
 "
 " configure tags - add additional tags here or comment out not-used ones
 "set tags+=~/.vim/tags/stl
@@ -157,6 +165,8 @@ endif
 "highlight Pmenu guibg=blue " gui=bold
 highlight Pmenu guibg=pink
 
+autocmd ColorScheme evening highlight CopilotSuggestion guibg=lightgrey guifg=black ctermfg=10
+autocmd ColorScheme evening highlight SignColumn guibg=darkgrey
 " }}}
 
 let mapleader=","
@@ -206,19 +216,22 @@ nnoremap <Space> zz
 nnoremap <C-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR>
 
-autocmd FileType ocaml nnoremap <F4> :Ack! -t ocaml -w <C-r><C-w><CR>
-autocmd FileType ocaml vnoremap <F4> y :Ack! -t ocaml -w <C-r>"<CR>
-
-autocmd FileType c nnoremap <F4> :Ack! -t cc -w <C-r><C-w><CR>
-autocmd FileType c vnoremap <F4> y :Ack! -t cc -w <C-r>"<CR>
-
-nnoremap <F4> :Ack! -w <C-r><C-w><CR>
-vnoremap <F4> y :Ack! -w <C-r>"<CR>
-
+" autocmd FileType ocaml nmap <F4> :Ack -t ocaml -w <C-r><C-w><CR>
+" autocmd FileType ocaml vmap <F4> y :Ack -t ocaml -w <C-r>"<CR>
+" 
+" autocmd FileType c nmap <F4> :Ack -t cc -w <C-r><C-w><CR>
+" autocmd FileType c vmap <F4> y :Ack -t cc -w <C-r>"<CR>
+" 
+" autocmd FileType python nmap <F4> :Ack -t python -w <C-r><C-w><CR>
+" autocmd FileType python vmap <F4> y :Ack -t python -w <C-r>"<CR>
+" 
 
 " this tells ack not to jump to the first occurence of a search by default
 cnoreabbrev Ack Ack!
 nnoremap <Leader>a :Ack!<Space>
+
+nnoremap <F4> :Ack -w <C-r><C-w><CR>
+vnoremap <F4> y :Ack -w <C-r>"<CR>
 
 " in vimdiff, go to next diff and obtain it
 nnoremap <Leader>f ]cdo
@@ -249,23 +262,32 @@ nnoremap <leader>cs :let @*=expand("%")<CR>
 nnoremap <leader>cl :let @*=expand("%:p")<CR>
 nnoremap <leader>cS :let @+=expand("%")<CR>
 nnoremap <leader>cL :let @+=expand("%:p")<CR>
+
+" Allow to search in the visual selection.
+vnoremap <M-/> <Esc>/\%V
+
 " nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
-autocmd FileType c,cpp nnoremap <buffer> <leader>g :YcmCompleter GoTo<CR>
-autocmd FileType c,cpp nnoremap <buffer> <leader>v :vsplit \| YcmCompleter GoTo<CR>
-autocmd FileType c,cpp nnoremap <buffer> <leader>s :split \| YcmCompleter GoTo<CR>
-autocmd FileType c,cpp nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
-autocmd FileType c,cpp nnoremap <buffer> <leader>r :YcmCompleter RefactorRename 
-autocmd FileType c,cpp nnoremap <buffer> <leader>f :YcmCompleter FixIt<CR> 
-autocmd FileType c,cpp nnoremap <buffer> <leader>o :!clang-format -i % <CR>
+autocmd FileType c,cpp,python nnoremap <buffer> <leader>g :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,python nnoremap <buffer> <leader>v :vsplit \| YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,python nnoremap <buffer> <leader>s :split \| YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,python nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
+autocmd FileType c,cpp,python nnoremap <buffer> <leader>r :YcmCompleter RefactorRename 
+autocmd FileType c,cpp,python nnoremap <buffer> <leader>f :YcmCompleter FixIt<CR> 
+autocmd FileType c,cpp nnoremap <buffer> <leader>o :!clang-format -i --style=file % <CR>
 
 autocmd FileType ocaml nnoremap <buffer> <leader>t :MerlinTypeOf <CR>
 autocmd FileType ocaml vnoremap <buffer> <leader>t :MerlinTypeOfSel <CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>q :MerlinLocateType <CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>g :MerlinLocate <CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>v :vsplit \| MerlinLocate <CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>s :split \| MerlinLocate <CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>s :MerlinLocate
 autocmd FileType ocaml nnoremap <buffer> <leader>r :MerlinRename 
 autocmd FileType ocaml nnoremap <buffer> <leader>o :!ocamlformat -i -q % <CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>f :MerlinJump fun<CR>
+autocmd FileType ocaml nnoremap <buffer> <leader>p :MerlinJump match<CR>
+
+autocmd FileType python nnoremap <buffer> <leader>o :!black -q % <CR>
 
 autocmd BufRead intermediate_format.ast set filetype=ocaml
 autocmd BufRead dune set filetype=lisp
@@ -276,6 +298,9 @@ nnoremap <leader>m :A<CR>
 nmap <C-]> g<C-]>
 nnoremap ,, <C-w><C-w>
 
+
+inoremap <silent><script><expr> <C-Space> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
 " }}}
 
 "  AUTOCOMMANDs (au)
@@ -328,9 +353,9 @@ set runtimepath^=~/.vim/plugin/
 " Ctrlp
 
 let g:ctrlp_root_markers = ['.ctrlp']
-let g:ctrlp_max_files=20000
+let g:ctrlp_max_files=40000
 let g:ctrlp_custom_ignore = {
-        \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)|build|cov|bin|tests/data',
+        \ 'dir':  '\v[\/]oprofile_data|\.(git|hg|svn|bzr)|build|cov|bin|venv*',
      	\ 'file': '\v\.(d|o|pdf|exe|so|dll|o|deps|fdeps|pyc|lua|cmake|make)$|-curr|\.ctrlp|tags|prof|\.\~.\~',
     \ }
 
@@ -367,8 +392,6 @@ function! FormatJSON()
  redir! system('jq . ', getreg('a'))
 endfunction
 nnoremap =j :call FormatJSON() <CR>
-
-hi DiffText ctermbg=1
 
 let g:opamshare = substitute(system('opam var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
