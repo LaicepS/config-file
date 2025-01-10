@@ -1,6 +1,5 @@
 " Vundle stuff
 " ----------------------------------------------------- {{{
-set encoding=utf-8
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -18,7 +17,6 @@ Plugin 'gmarik/Vundle.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
-"Plugin 'tpope/vim-fugitive'
 " plugin from http://vim-scripts.org/vim/scripts.html
 "Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -33,20 +31,27 @@ Plugin 'gmarik/Vundle.vim'
 
 
 " YCM
-Plugin 'mileszs/ack.vim'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'kien/ctrlp.vim'
-Plugin 'mhinz/vim-signify'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'vim-scripts/a.vim'
-Plugin 'vim-scripts/AnsiEsc.vim'
-Plugin 'AndrewRadev/linediff.vim'
-Plugin 'rust-lang/rust.vim'
-Plugin 'neoclide/coc.nvim', {'branch': 'release'}
+" Plugin 'mileszs/ack.vim'
+" Plugin 'Valloric/YouCompleteMe'
+" Plugin 'kien/ctrlp.vim'
+" Plugin 'mhinz/vim-signify'
+" Plugin 'davidhalter/jedi-vim'
+" Plugin 'tpope/vim-fugitive'
+" Plugin 'vim-syntastic/syntastic'
+" Plugin 'vim-scripts/a.vim'
+" Plugin 'vim-scripts/AnsiEsc.vim'
+" Plugin 'AndrewRadev/linediff.vim'
+" Plugin 'rust-lang/rust.vim'
 "Plugin 'dpayne/CodeGPT.nvim'
 "Plugin 'github/copilot.vim'
+
+" call plug#begin()
+" 
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" 
+" call plug#end()
+
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -71,41 +76,14 @@ syntax on         " syntax highlighting
 filetype plugin on
 filetype indent on
 
-set history=10000
-set viminfo=!,'10000,<50,s10,h,:10000
-
-if has("gui_running")
-  colorscheme  evening
-else
-  colorscheme  default
-endif
-
 " }}}
 
 "  SETs
 " ----------------------------------------------------- {{{
-set background=dark
-set smartindent   " smart code indentation
-set smarttab      " smart tabs
-set nocp " needed for ctags
-set backspace=2 " define backspace behaviour
-set tabstop=8 softtabstop=0 expandtab 
-set showmode
-set showcmd
-set ruler
-set smartcase
-set textwidth=0
-set shiftwidth=2
-set nonu " line number
-set hlsearch " highlight search
-set incsearch " search as typing
-set cursorline " highlight current line
-set cursorcolumn " highlight current col
 " hi CursorLine guibg=darkred guifg=white " make the cursor line more visisble on dark background
 " always show the status line
 set laststatus=2
 " statusline format
-set guifont=Monospace\ 10
 set statusline=%{FugitiveStatusline()}%f%m%r%h%w%y[%l,%v]%=%{getcwd()}
 "
 " configure tags - add additional tags here or comment out not-used ones
@@ -128,6 +106,7 @@ set guioptions-=T
 "remove scroll bars
 set guioptions-=r
 set guioptions-=L
+
 " move backup to .vim/tmp
 set backupdir=~/.vim/tmp
 set directory=~/.vim/tmp
@@ -165,13 +144,13 @@ endif
 
 " set the completion menu to  readable colors on a dark background
 "highlight Pmenu guibg=blue " gui=bold
-highlight Pmenu guibg=pink
+highlight Pmenu guibg=blue
 
 " autocmd ColorScheme evening highlight CopilotSuggestion guibg=lightgrey guifg=black ctermfg=10
 " autocmd ColorScheme evening highlight SignColumn guibg=darkgrey
 " }}}
 
-let mapleader=","
+let g:mapleader=","
 let $PAGER=''
 
 "  MAPs
@@ -212,8 +191,6 @@ nnoremap L $
 
 " going into normal mode without esc
 inoremap jk <Esc>
-
-nnoremap <Space> zz
 
 nnoremap <C-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR>
@@ -268,14 +245,16 @@ nnoremap <leader>cL :let @+=expand("%:p")<CR>
 " Allow to search in the visual selection.
 vnoremap <M-/> <Esc>/\%V
 
+nmap <silent> ,v :call CocAction('jumpDefinition', 'vsplit')<CR>
+
 " nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>g :YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>v :vsplit \| YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>s :split \| YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>r :YcmCompleter RefactorRename 
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>f :YcmCompleter FixIt<CR> 
-autocmd FileType c,cpp nnoremap <buffer> <leader>o :!clang-format -i --style=file % <CR>
+" autocmd FileType c,cpp nnoremap <buffer> <leader>g :YcmCompleter GoTo<CR>
+" autocmd FileType c,cpp nnoremap <buffer> <leader>v :vsplit \| YcmCompleter GoTo<CR>
+" autocmd FileType c,cpp nnoremap <buffer> <leader>s :split \| YcmCompleter GoTo<CR>
+" autocmd FileType c,cpp nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
+" autocmd FileType c,cpp nnoremap <buffer> <leader>r :YcmCompleter RefactorRename 
+" autocmd FileType c,cpp nnoremap <buffer> <leader>f :YcmCompleter FixIt<CR> 
+" autocmd FileType c,cpp nnoremap <buffer> <leader>o :!clang-format -i --style=file % <CR>
 
 autocmd FileType ocaml nnoremap <buffer> <leader>t :MerlinTypeOf <CR>
 autocmd FileType ocaml vnoremap <buffer> <leader>t :MerlinTypeOfSel <CR>
@@ -289,7 +268,7 @@ autocmd FileType ocaml nnoremap <buffer> <leader>o :!ocamlformat -i -q % <CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>f :MerlinJump fun<CR>
 autocmd FileType ocaml nnoremap <buffer> <leader>p :MerlinJump match<CR>
 
-autocmd FileType python nnoremap <buffer> <leader>o :!black -q -l 80 % <CR>
+autocmd FileType python nnoremap <buffer> <leader>o :!black -q %<CR>
 
 autocmd BufRead intermediate_format.ast set filetype=ocaml
 autocmd BufRead dune set filetype=lisp
@@ -410,7 +389,7 @@ let g:airline_theme='one'
 
 " recommended settings
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 0
