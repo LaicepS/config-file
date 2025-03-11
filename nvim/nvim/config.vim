@@ -1,6 +1,5 @@
 " Vundle stuff
 " ----------------------------------------------------- {{{
-set encoding=utf-8
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -18,7 +17,6 @@ Plugin 'gmarik/Vundle.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
-"Plugin 'tpope/vim-fugitive'
 " plugin from http://vim-scripts.org/vim/scripts.html
 "Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -33,20 +31,26 @@ Plugin 'gmarik/Vundle.vim'
 
 
 " YCM
-Plugin 'mileszs/ack.vim'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'kien/ctrlp.vim'
-Plugin 'mhinz/vim-signify'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'vim-scripts/a.vim'
-Plugin 'vim-scripts/AnsiEsc.vim'
-Plugin 'AndrewRadev/linediff.vim'
-Plugin 'rust-lang/rust.vim'
-Plugin 'neoclide/coc.nvim', {'branch': 'release'}
+" Plugin 'mileszs/ack.vim'
+" Plugin 'Valloric/YouCompleteMe'
+" Plugin 'kien/ctrlp.vim'
+" Plugin 'mhinz/vim-signify'
+" Plugin 'davidhalter/jedi-vim'
+" Plugin 'tpope/vim-fugitive'
+" Plugin 'vim-syntastic/syntastic'
+" Plugin 'vim-scripts/a.vim'
+" Plugin 'vim-scripts/AnsiEsc.vim'
+" Plugin 'AndrewRadev/linediff.vim'
+" Plugin 'rust-lang/rust.vim'
 "Plugin 'dpayne/CodeGPT.nvim'
-"Plugin 'github/copilot.vim'
+
+" call plug#begin()
+"
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"
+" call plug#end()
+
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -71,41 +75,14 @@ syntax on         " syntax highlighting
 filetype plugin on
 filetype indent on
 
-set history=10000
-set viminfo=!,'10000,<50,s10,h,:10000
-
-if has("gui_running")
-  colorscheme  evening
-else
-  colorscheme  default
-endif
-
 " }}}
 
 "  SETs
 " ----------------------------------------------------- {{{
-set background=dark
-set smartindent   " smart code indentation
-set smarttab      " smart tabs
-set nocp " needed for ctags
-set backspace=2 " define backspace behaviour
-set tabstop=8 softtabstop=0 expandtab 
-set showmode
-set showcmd
-set ruler
-set smartcase
-set textwidth=0
-set shiftwidth=2
-set nonu " line number
-set hlsearch " highlight search
-set incsearch " search as typing
-set cursorline " highlight current line
-set cursorcolumn " highlight current col
 " hi CursorLine guibg=darkred guifg=white " make the cursor line more visisble on dark background
 " always show the status line
 set laststatus=2
 " statusline format
-set guifont=Monospace\ 10
 set statusline=%{FugitiveStatusline()}%f%m%r%h%w%y[%l,%v]%=%{getcwd()}
 "
 " configure tags - add additional tags here or comment out not-used ones
@@ -128,6 +105,7 @@ set guioptions-=T
 "remove scroll bars
 set guioptions-=r
 set guioptions-=L
+
 " move backup to .vim/tmp
 set backupdir=~/.vim/tmp
 set directory=~/.vim/tmp
@@ -165,13 +143,13 @@ endif
 
 " set the completion menu to  readable colors on a dark background
 "highlight Pmenu guibg=blue " gui=bold
-highlight Pmenu guibg=pink
+highlight Pmenu guibg=blue
 
 " autocmd ColorScheme evening highlight CopilotSuggestion guibg=lightgrey guifg=black ctermfg=10
 " autocmd ColorScheme evening highlight SignColumn guibg=darkgrey
 " }}}
 
-let mapleader=","
+let g:mapleader=","
 let $PAGER=''
 
 "  MAPs
@@ -213,27 +191,21 @@ nnoremap L $
 " going into normal mode without esc
 inoremap jk <Esc>
 
-nnoremap <Space> zz
-
 nnoremap <C-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR>
 
 " autocmd FileType ocaml nmap <F4> :Ack -t ocaml -w <C-r><C-w><CR>
 " autocmd FileType ocaml vmap <F4> y :Ack -t ocaml -w <C-r>"<CR>
-" 
+"
 " autocmd FileType c nmap <F4> :Ack -t cc -w <C-r><C-w><CR>
 " autocmd FileType c vmap <F4> y :Ack -t cc -w <C-r>"<CR>
-" 
+"
 " autocmd FileType python nmap <F4> :Ack -t python -w <C-r><C-w><CR>
 " autocmd FileType python vmap <F4> y :Ack -t python -w <C-r>"<CR>
-" 
+"
 
-" this tells ack not to jump to the first occurence of a search by default
-cnoreabbrev Ack Ack!
-nnoremap <Leader>a :Ack!<Space>
-
-nnoremap <F4> :Ack -w <C-r><C-w><CR>
-vnoremap <F4> y :Ack -w <C-r>"<CR>
+nnoremap <F4> :vertical Git grep -w <C-r><C-w><CR>
+vnoremap <F4> y :vertical Git grep -w <C-r>"<CR>
 
 " in vimdiff, go to next diff and obtain it
 nnoremap <Leader>f ]cdo
@@ -268,28 +240,43 @@ nnoremap <leader>cL :let @+=expand("%:p")<CR>
 " Allow to search in the visual selection.
 vnoremap <M-/> <Esc>/\%V
 
+nmap <silent> ,v :call CocAction('jumpDefinition', 'vsplit')<CR>
+
 " nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>g :YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>v :vsplit \| YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>s :split \| YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>r :YcmCompleter RefactorRename 
-autocmd FileType c,cpp,python nnoremap <buffer> <leader>f :YcmCompleter FixIt<CR> 
+" autocmd FileType c,cpp nnoremap <buffer> <leader>g :YcmCompleter GoTo<CR>
+" autocmd FileType c,cpp nnoremap <buffer> <leader>v :vsplit \| YcmCompleter GoTo<CR>
+" autocmd FileType c,cpp nnoremap <buffer> <leader>s :split \| YcmCompleter GoTo<CR>
+" autocmd FileType c,cpp nnoremap <buffer> <leader>t :tj <C-R><C-W><CR>
+" autocmd FileType c,cpp nnoremap <buffer> <leader>r :YcmCompleter RefactorRename
+" autocmd FileType c,cpp nnoremap <buffer> <leader>f :YcmCompleter FixIt<CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>o :!clang-format -i --style=file % <CR>
 
-autocmd FileType ocaml nnoremap <buffer> <leader>t :MerlinTypeOf <CR>
-autocmd FileType ocaml vnoremap <buffer> <leader>t :MerlinTypeOfSel <CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>q :MerlinLocateType <CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>g :MerlinLocate <CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>v :vsplit \| MerlinLocate <CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>s :split \| MerlinLocate <CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>s :MerlinLocate
-autocmd FileType ocaml nnoremap <buffer> <leader>r :MerlinRename 
-autocmd FileType ocaml nnoremap <buffer> <leader>o :!ocamlformat -i -q % <CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>f :MerlinJump fun<CR>
-autocmd FileType ocaml nnoremap <buffer> <leader>p :MerlinJump match<CR>
 
-autocmd FileType python nnoremap <buffer> <leader>o :!black -q -l 80 % <CR>
+let g:ale_lint_on_save                = 1
+let g:ale_fix_on_save                = 1
+
+let g:ale_linters = {
+      \   'ocaml':      ['merlin'],
+      \}
+
+let g:ale_fixers = {
+      \   'ocaml':      ['ocamlformat'],
+      \   '*':          ['remove_trailing_lines', 'trim_whitespace'],
+      \}
+
+autocmd FileType ocaml nmap <buffer> <leader>t :MerlinTypeOf <CR>
+autocmd FileType ocaml vmap <buffer> <leader>t :MerlinTypeOfSel <CR>
+autocmd FileType ocaml nmap <buffer> <leader>q :MerlinLocateType <CR>
+autocmd FileType ocaml nmap <buffer> <leader>g :MerlinLocate <CR>
+autocmd FileType ocaml nmap <buffer> <leader>v :vsplit \| MerlinLocate <CR>
+autocmd FileType ocaml nmap <buffer> <leader>s :split \| MerlinLocate <CR>
+autocmd FileType ocaml nmap <buffer> <leader>s :MerlinLocate
+autocmd FileType ocaml nmap <buffer> <leader>r :MerlinRename
+autocmd FileType ocaml nmap <buffer> <leader>o :!ocamlformat -i -q % <CR>
+" autocmd FileType ocaml nmap <buffer> <leader>f :MerlinJump fun<CR>
+" autocmd FileType ocaml nmap <buffer> <leader>p :MerlinJump match<CR>
+
+autocmd FileType python nnoremap <buffer> <leader>o :!black -q %<CR>
 
 autocmd BufRead intermediate_format.ast set filetype=ocaml
 autocmd BufRead dune set filetype=lisp
@@ -301,12 +288,12 @@ nmap <C-]> g<C-]>
 nnoremap ,, <C-w><C-w>
 
 
-" imap <silent><script><expr> <C-n> copilot#Accept("\<CR>")
-" let g:copilot_no_tab_map = v:true
-" let g:copilot_filetypes = {
-"       \ 'text': v:false,
-"       \ }
-" }}}
+imap <silent><script><expr> <C-m> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
+let g:copilot_filetypes = {
+      \ 'text': v:false,
+      \ }
+" ----------------------------------------------------- }}}
 
 "  AUTOCOMMANDs (au)
 " ----------------------------------------------------- {{{
@@ -354,7 +341,7 @@ augroup END
 " set foldlevel=1
 " set foldclose=all
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim
+" set runtimepath^=~/.vim/bundle/ctrlp.vim
 set runtimepath^=~/.vim/plugin/
 
 " Ctrlp
@@ -400,8 +387,8 @@ function! FormatJSON()
 endfunction
 nnoremap =j :call FormatJSON() <CR>
 
-let g:opamshare = substitute(system('opam var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
+" let g:opamshare = substitute(system('opam var share'),'\n$','','''')
+" execute "set rtp+=" . g:opamshare . "/merlin/vim"
 
 let g:airline_theme='one'
 "map <leader>y :call CopyText()<CR>
@@ -410,7 +397,7 @@ let g:airline_theme='one'
 
 " recommended settings
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 0
@@ -420,54 +407,17 @@ let g:syntastic_check_on_wq = 0
 
 
 let g:syntastic_ocaml_checkers = ['merlin']
- 
+
 
 " Merlin
 let g:merlin_display_error_list = 0
 let g:merlin_split_method = "never"
-" 
+"
 " let g:jedi#autocompletion_command = "<C-N>"
-" 
+"
 " " Disable omnicompletion when Copilot is active
 " autocmd User CopilotSuggestion show call DisableOmni()
-" 
+"
 " function! DisableOmni()
 "   setlocal omnifunc=
 " endfunction
-" ## added by OPAM user-setup for vim / base ## d611dd144a5764d46fdea4c0c2e0ba07 ## you can edit, but keep this line
-let s:opam_share_dir = system("opam var share")
-let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
-
-let s:opam_configuration = {}
-
-function! OpamConfOcpIndent()
-  execute "set rtp^=" . s:opam_share_dir . "/ocp-indent/vim"
-endfunction
-let s:opam_configuration['ocp-indent'] = function('OpamConfOcpIndent')
-
-function! OpamConfOcpIndex()
-  execute "set rtp+=" . s:opam_share_dir . "/ocp-index/vim"
-endfunction
-let s:opam_configuration['ocp-index'] = function('OpamConfOcpIndex')
-
-function! OpamConfMerlin()
-  let l:dir = s:opam_share_dir . "/merlin/vim"
-  execute "set rtp+=" . l:dir
-endfunction
-let s:opam_configuration['merlin'] = function('OpamConfMerlin')
-
-let s:opam_packages = ["ocp-indent", "ocp-index", "merlin"]
-let s:opam_available_tools = []
-for tool in s:opam_packages
-  " Respect package order (merlin should be after ocp-index)
-  if isdirectory(s:opam_share_dir . "/" . tool)
-    call add(s:opam_available_tools, tool)
-    call s:opam_configuration[tool]()
-  endif
-endfor
-" ## end of OPAM user-setup addition for vim / base ## keep this line
-" ## added by OPAM user-setup for vim / ocp-indent ## 227d8282371f60877bc26f2c757139be ## you can edit, but keep this line
-if count(s:opam_available_tools,"ocp-indent") == 0
-  source "/home/dorian/tis/deps/opam/root-2.1.x/4.14.1/share/ocp-indent/vim/indent/ocaml.vim"
-endif
-" ## end of OPAM user-setup addition for vim / ocp-indent ## keep this line

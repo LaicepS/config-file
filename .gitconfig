@@ -33,3 +33,5 @@
 	helper = store
 [status]
 	relativePaths = true
+[safe]
+	directory = /builds/trust/googletest

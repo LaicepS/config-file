@@ -1,0 +1,11 @@
+{
+  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/19.1.2/clangd_19.1.2/bin/clangd",
+  "clangd.arguments": ["--enable-config", "--log=verbose"],
+  "clangd.trace.file": "/tmp/clangdlog.txt",
+  "json.schemas": [
+    {
+      "url": "file:///home/dorian/vscode-extension/tis-config/tis-config-schema-v2024.10.2-dirty.json",
+      "fileMatch": ["trustinsoft/*.json"]
+    }
+  ]
+}
