@@ -111,6 +111,8 @@ set backupdir=~/.vim/tmp
 set directory=~/.vim/tmp
 
 set autoread
+" Needed for autoread to work
+autocmd FocusGained * checktime
 
 " open vertical splits on the right
 set splitright
@@ -250,7 +252,6 @@ nmap <silent> ,v :call CocAction('jumpDefinition', 'vsplit')<CR>
 " autocmd FileType c,cpp nnoremap <buffer> <leader>r :YcmCompleter RefactorRename
 " autocmd FileType c,cpp nnoremap <buffer> <leader>f :YcmCompleter FixIt<CR>
 autocmd FileType c,cpp nnoremap <buffer> <leader>o :!clang-format -i --style=file % <CR>
-
 
 let g:ale_lint_on_save                = 1
 let g:ale_fix_on_save                = 1

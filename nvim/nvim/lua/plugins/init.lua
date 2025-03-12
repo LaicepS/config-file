@@ -6,4 +6,5 @@ return {
   { "tpope/vim-fugitive" },
   { "neoclide/coc.nvim" },
   { "github/copilot.vim" },
+  { "tpope/vim-commentary" },
 }
