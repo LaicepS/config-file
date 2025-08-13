@@ -1,6 +1,5 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc) for examples
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -20,6 +19,9 @@ shopt -s histappend
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# Autocd
+shopt -s autocd
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
@@ -32,6 +34,7 @@ fi
 case "$TERM" in
     xterm-color) color_prompt=yes;;
 esac
+color_prompt=yes
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
@@ -50,9 +53,9 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]$(__git_ps1) \$ $? '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ $?'
 fi
 unset color_prompt force_color_prompt
 
@@ -65,7 +68,7 @@ xterm*|rxvt*)
     ;;
 esac
 
-PS1='\d \D{%R} $(echo -n $?) \w '
+#PS1='\d \D{%R} $(echo -n $?) \w '
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -109,7 +112,7 @@ fi
 MANPATH=/usr/share/man:/usr/local/man:/usr/lib64/lam/man
 
 #	bin path
-PATH=/usr/local/jdk1.6.0_20/bin:/usr/local/bin/:/usr/bin:/bin:/usr/sbin:/usr/X11R6/bin:/imag/bin:/usr/kerberos/bin:/usr/lib64/lam/bin
+PATH=/home/dorian/opt/nvim/nvim-linux-x86_64/bin:/usr/local/jdk1.6.0_20/bin:/usr/local/bin/:/usr/bin:/bin:/usr/sbin:/usr/X11R6/bin:/imag/bin:/usr/kerberos/bin:/usr/lib64/lam/bin
 #
 #	library path
 LD_LIBRARY_PATH=/usr/local/lib:/lib:/usr/lib:/usr/X11R6/lib:/usr/lib64/lam/lib
@@ -131,9 +134,34 @@ export CLASSPATH=$CLASSPATH:$ORACLE_HOME/jdbc/lib/ojdbc6.jar
 export PATH=$ORACLE_HOME/bin:$PATH
 
 ## Vim stuff
-stty -ixon
-# set vim as the man page viewer with expected behavior
-export PAGER="/bin/sh -c \"unset PAGER;col -b -x | \
-    vim -R -c 'set ft=man nomod nolist' -c 'map q :q<CR>' \
-    -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
-    -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' -\""
+#stty -ixon
+## set vim as the man page viewer with expected behavior
+#export PAGER="/bin/sh -c \"unset PAGER;col -b -x | \
+#    nvim -R -c 'set ft=man nomod nolist' -c 'map q :q<CR>' \
+#    -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
+#    -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' -\""
+
+source ~/.tis_profile
+
+alias v=nvim-qt
+alias m='make -j8'
+alias lg=lazygit
+
+# Set up fzf key bindings and fuzzy completion
+source /usr/share/doc/fzf/examples/key-bindings.bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# http://stackoverflow.com/questions/9457233/unlimited-bash-history
+export HISTFILESIZE=
+export HISTSIZE=
+export HISTTIMEFORMAT="[%F %T] "
+# Change the file location because certain bash sessions truncate .bash_history file upon close.
+# http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
+export HISTFILE=~/.bash_eternal_history
+# Force prompt to write history after every command.
+# http://superuser.com/questions/20900/bash-history-loss
+PROMPT_COMMAND="history -a; $PROMPT_COMMAND"

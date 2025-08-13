@@ -7,7 +7,7 @@
     default = current
 [difftool]
     prompt = false
-    tool = gvimdiff
+    tool = nvimd
 
 [merge]
   tool = gvimdiff
@@ -35,3 +35,5 @@
 	relativePaths = true
 [safe]
 	directory = /builds/trust/googletest
+[pull]
+	rebase = true
